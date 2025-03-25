@@ -21,14 +21,16 @@ const secretKey = crypto.randomBytes(32).toString('hex');
 
 // MongoDB Connection
 const mongoURI = process.env.MONGODB_URL;
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+
+mongoose.set('strictQuery', false); // Optional, suppresses query filter warnings
+
+mongoose.connect(mongoURI)
+  .then(() => {
     console.log('MongoDB connection successful!');
-}).catch((error) => {
+  })
+  .catch((error) => {
     console.error('MongoDB connection error:', error);
-});
+  });
 
 // Session Middleware
 app.use(session({
