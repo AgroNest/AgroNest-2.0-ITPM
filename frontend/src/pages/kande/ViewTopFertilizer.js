@@ -1,333 +1,172 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, Form, FormControl } from 'react-bootstrap';
-import axios from 'axios';
-import { PDFDocument } from '@react-pdf/renderer';
-import { AiOutlineSearch } from 'react-icons/ai';
 import {
-  PDFDownloadLink,
-  Document,
-  Page,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-} from '@react-pdf/renderer';
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { PDFDownloadLink, Document, Page, View, Text, StyleSheet, Image } from '@react-pdf/renderer';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 import agronestLogo from '../../images/common/agronestlogo.jpg';
 
+// PDF Template
 const MyDocument = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
         <Image style={styles.logo} src={agronestLogo} />
         <Text style={styles.title}>Top Fertilizers</Text>
-
-        <View style={styles.tableContainer}>
-          <Table style={styles.table} fixed>
-            <View style={styles.tableHeader}>
-              <Text style={styles.headerCell}></Text>
-              <Text style={styles.headerCell}>xxxx Name</Text>
-              <Text style={styles.headerCell}>yyyyy</Text>
-            </View>
-            <View style={styles.tableBody}>
-              {data.map((fertilizer, index) => (
-                <View key={fertilizer._id} style={styles.row}>
-                  <Text style={styles.cell}>{index + 1}</Text>
-                  <Text style={styles.cell}>{fertilizer.fertilizername}</Text>
-                  <Text style={styles.cell}>{fertilizer.noofsales}</Text>
-                </View>
-              ))}
-            </View>
-          </Table>
-          <Text> </Text>
-          <Text style={styles.companyAddress}>
-            AGRONEST,Yaya4,Anuradhapura
-          </Text>{' '}
-          {/* Add company address */}
-          <Text style={styles.dateTime}>
-            {currentDate} {currentTime}
-          </Text>{' '}
-          {/* Add current date and time */}
-        </View>
+        {data.map((item, index) => (
+          <View key={item._id} style={styles.row}>
+            <Text style={styles.cell}>{index + 1}</Text>
+            <Text style={styles.cell}>{item.fertilizername}</Text>
+            <Text style={styles.cell}>{item.noofsales}</Text>
+          </View>
+        ))}
+        <Text style={styles.footer}>AGRONEST, Yaya4, Anuradhapura - {new Date().toLocaleString()}</Text>
       </View>
     </Page>
   </Document>
 );
 
-const currentDate = new Date().toLocaleDateString();
-const currentTime = new Date().toLocaleTimeString();
-
+// PDF Styles
 const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4',
-    padding: 10,
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  tableContainer: {
-    marginTop: 20,
-  },
-  table: {
-    width: '100%',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#000',
-  },
-  tableHeader: {
-    flexDirection: 'row',
-  },
-  headerCell: {
-    backgroundColor: '#f0f0f0',
-    padding: 5,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#000',
-    flex: 1,
-  },
-  tableBody: {
-    marginTop: 2,
-  },
-  row: {
-    flexDirection: 'row',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#000',
-  },
-  cell: {
-    padding: 5,
-    textAlign: 'center',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#000',
-    flex: 1,
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
-    alignSelf: 'center',
-  },
+  page: { padding: 20, backgroundColor: '#f0f0f0' },
+  section: { flexDirection: 'column', alignItems: 'center' },
+  logo: { width: 100, height: 100, marginBottom: 10 },
+  title: { fontSize: 18, marginBottom: 10 },
+  row: { flexDirection: 'row', marginBottom: 5 },
+  cell: { width: 150, border: 1, padding: 5 },
+  footer: { marginTop: 20, fontSize: 10 },
 });
 
 const ViewTopFertilizer = () => {
   const [topFertilizers, setTopFertilizers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateFormData, setUpdateFormData] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          'http://localhost:8070/topfertilizercategory/'
-        );
-        setTopFertilizers(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching top fertilizers:', error);
-      }
-    };
-
-    fetchData();
+    axios.get('http://localhost:8070/topfertilizercategory/')
+      .then(res => setTopFertilizers(res.data))
+      .catch(err => console.error('Error fetching fertilizers:', err));
   }, []);
 
-  const handleUpdate = (id) => {
-    const selectedFertilizer = topFertilizers.find(
-      (fertilizer) => fertilizer._id === id
-    );
-    setUpdateFormData(selectedFertilizer);
+  const handleUpdate = (fertilizer) => {
+    setUpdateFormData(fertilizer);
     setShowUpdateForm(true);
   };
 
-  const handleCloseUpdateForm = () => {
-    setShowUpdateForm(false);
+  const handleUpdateSubmit = () => {
+    axios.put(`http://localhost:8070/topfertilizercategory/update/${updateFormData._id}`, updateFormData)
+      .then(() => {
+        setTopFertilizers(ferts => ferts.map(f => f._id === updateFormData._id ? updateFormData : f));
+        setShowUpdateForm(false);
+        Swal.fire('Updated!', 'Fertilizer updated successfully.', 'success');
+      });
   };
 
-  const handleUpdateFormChange = (e) => {
-    setUpdateFormData({ ...updateFormData, [e.target.name]: e.target.value });
-  };
-
-  const handleUpdateSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.put(
-        `http://localhost:8070/topfertilizercategory/update/${updateFormData._id}`,
-        updateFormData
-      );
-      // Update the state with the updated fertilizer
-      setTopFertilizers(
-        topFertilizers.map((fertilizer) => {
-          if (fertilizer._id === updateFormData._id) {
-            return updateFormData;
-          }
-          return fertilizer;
-        })
-      );
-      setShowUpdateForm(false);
-      console.log('Fertilizer updated successfully:', updateFormData._id);
-    } catch (error) {
-      console.error('Error updating fertilizer:', error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this fertilizer!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(
-            `http://localhost:8070/topfertilizercategory/delete/${id}`
-          );
-          // Remove the deleted fertilizer from the state
-          setTopFertilizers(
-            topFertilizers.filter((fertilizer) => fertilizer._id !== id)
-          );
-          console.log('Fertilizer deleted successfully:', id);
-          // Show success message with OK button
-          Swal.fire({
-            title: 'Deleted!',
-            text: 'Your fertilizer has been deleted successfully.',
-            icon: 'success',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'OK',
-          });
-        } catch (error) {
-          console.error('Error deleting fertilizer:', error);
+  const handleDelete = (id) => {
+    Swal.fire({ title: 'Are you sure?', icon: 'warning', showCancelButton: true })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await axios.delete(`http://localhost:8070/topfertilizercategory/delete/${id}`);
+          setTopFertilizers(ferts => ferts.filter(f => f._id !== id));
+          Swal.fire('Deleted!', 'Fertilizer deleted successfully.', 'success');
         }
-      }
-    });
+      });
   };
 
-  // Generate PDF report
-  const generateReport = () => {
-    const fileName = 'Top_Fertilizers_Report.pdf';
-    const pdfData = <MyDocument data={topFertilizers} />;
-
-    return (
-      <PDFDownloadLink document={pdfData} fileName={fileName}>
-        {({ blob, url, loading, error }) =>
-          loading ? 'Generating PDF...' : 'Download PDF'
-        }
-      </PDFDownloadLink>
-    );
-  };
-
-  // Search function
-  const filteredFertilizers = topFertilizers.filter((fertilizer) =>
-    fertilizer.fertilizername.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredFertilizers = topFertilizers.filter((f) =>
+    f.fertilizername?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="container">
-      <h1 style={{ color: 'white' }}>Top Fertilizer List</h1>
-      <Button
-        variant="primary"
-        onClick={() => window.history.back()}
-        style={{ marginLeft: '-90%' }}
-      >
+    <div style={{ padding: 20 }}>
+      <Typography variant="h4" gutterBottom>Top Fertilizer List</Typography>
+
+      <Button variant="contained" color="primary" onClick={() => window.history.back()} sx={{ mb: 2 }}>
         Go Back
       </Button>
-      <FormControl
-        type="text"
-        placeholder="Search by fertilizer name"
-        className="mt-3 mb-3"
+
+      <TextField
+        label="Search by Fertilizer Name"
+        variant="outlined"
+        value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        style={{
-          maxWidth: '300px',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        }}
+        sx={{ mb: 2, ml: 2 }}
       />
-      <Button variant="warning">{generateReport()}</Button>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <Table striped bordered hover style={{ marginTop: '10px' }}>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Fertilizer Name</th>
-                <th>Number of Sales</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredFertilizers.map((fertilizer, index) => (
-                <tr key={fertilizer._id}>
-                  <td>{index + 1}</td>
-                  <td>{fertilizer.fertilizername}</td>
-                  <td>{fertilizer.noofsales}</td>
-                  <td>
-                    <Button
-                      variant="success"
-                      onClick={() => handleUpdate(fertilizer._id)}
-                    >
-                      Update
-                    </Button>{' '}
-                    <Button
-                      variant="danger"
-                      onClick={() => handleDelete(fertilizer._id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <Modal show={showUpdateForm} onHide={handleCloseUpdateForm}>
-            <Modal.Header closeButton>
-              <Modal.Title>Edit Fertilizer</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form onSubmit={handleUpdateSubmit}>
-                <Form.Group controlId="formFertilizerName">
-                  <Form.Label>Fertilizer Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter fertilizer name"
-                    name="fertilizername"
-                    value={updateFormData.fertilizername || ''}
-                    onChange={handleUpdateFormChange}
-                  />
-                </Form.Group>
-                <Form.Group controlId="formNumberOfSales">
-                  <Form.Label>Number of Sales</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter number of sales"
-                    name="noofsales"
-                    value={updateFormData.noofsales || ''}
-                    onChange={handleUpdateFormChange}
-                  />
-                </Form.Group>
-                <br />
-                <Button variant="primary" type="submit">
-                  Update
-                </Button>
-              </Form>
-            </Modal.Body>
-          </Modal>
-        </>
-      )}
+
+      <PDFDownloadLink
+        document={<MyDocument data={filteredFertilizers} />}
+        fileName="Top_Fertilizers_Report.pdf"
+        style={{ textDecoration: 'none' }}
+      >
+        {({ loading }) => (
+          <Button variant="outlined" color="secondary" sx={{ ml: 2 }}>
+            {loading ? 'Generating PDF...' : 'Download PDF'}
+          </Button>
+        )}
+      </PDFDownloadLink>
+
+      <Table sx={{ mt: 2 }}>
+        <TableHead>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell>Fertilizer Name</TableCell>
+            <TableCell>Number of Sales</TableCell>
+            <TableCell>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {filteredFertilizers.map((f, index) => (
+            <TableRow key={f._id}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>{f.fertilizername}</TableCell>
+              <TableCell>{f.noofsales}</TableCell>
+              <TableCell>
+                <Button variant="contained" color="success" size="small" onClick={() => handleUpdate(f)}>Update</Button>
+                <Button variant="contained" color="error" size="small" sx={{ ml: 1 }} onClick={() => handleDelete(f._id)}>Delete</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      {/* Update Dialog */}
+      <Dialog open={showUpdateForm} onClose={() => setShowUpdateForm(false)}>
+        <DialogTitle>Update Fertilizer</DialogTitle>
+        <DialogContent>
+          <TextField
+            margin="dense"
+            label="Fertilizer Name"
+            fullWidth
+            value={updateFormData.fertilizername || ''}
+            onChange={(e) => setUpdateFormData({ ...updateFormData, fertilizername: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            label="Number of Sales"
+            type="number"
+            fullWidth
+            value={updateFormData.noofsales || ''}
+            onChange={(e) => setUpdateFormData({ ...updateFormData, noofsales: e.target.value })}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateSubmit} variant="contained">Update</Button>
+          <Button onClick={() => setShowUpdateForm(false)}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

@@ -1,8 +1,6 @@
-/*
-    DEMO STYLE
-*/
+/* Fonts */
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700');
 
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Poppins', sans-serif;
     background: #fafafa;
@@ -24,6 +22,7 @@ a:focus {
     transition: all 0.3s;
 }
 
+/* Navbar */
 .navbar {
     padding: 15px 10px;
     background: #fff;
@@ -39,6 +38,7 @@ a:focus {
     border: none;
 }
 
+/* Line Separator */
 .line {
     width: 100%;
     height: 1px;
@@ -56,12 +56,12 @@ a:focus {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05), 0 2px 10px 0 rgba(0, 0, 0, 0.05);
     width: 240px;
     z-index: 600;
-    background-color: #4CAF50; /* Greenish color */
+    background-color: #4CAF50;
 }
 
 .sidebar .active {
     border-radius: 5px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.16), 0 2px 10px rgba(0,0,0,0.12);
 }
 
 .sidebar-sticky {
@@ -70,21 +70,15 @@ a:focus {
     height: calc(100vh - 48px);
     padding-top: 0.5rem;
     overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    overflow-y: auto;
 }
 
-/* ---------------------------------------------------
-    MEDIAQUERIES
------------------------------------------------------ */
-
+/* Responsive */
 @media (max-width: 768px) {
-    #sidebar {
+    .sidebar {
         margin-left: -250px;
     }
-    #sidebar.active {
+    .sidebar.active {
         margin-left: 0;
     }
-    #sidebarCollapse span {
-        display: none;
-    }
-}  
+}

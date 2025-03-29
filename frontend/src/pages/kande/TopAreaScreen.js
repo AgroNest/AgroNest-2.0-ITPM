@@ -1,24 +1,25 @@
 import React from 'react';
 import AddTopAreas from '../../Component/kande/AddTopAreas';
 import backgroundImage from '../../images/common/background.avif';
-import '../../styles/udana/dealer_profile.css';
+import { Box } from '@mui/material';
 
 const TopAreas = () => {
-  return (
-    <div
-      className="profile-page-container"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        minHeight: '100vh',
-      }}
-    >
-      <header />
-      <div className="profile-page-content">
-        <AddTopAreas />
-      </div>
-    </div>
-  );
+    return (
+        <Box
+            sx={{
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                p: 2,
+            }}
+        >
+            <AddTopAreas />
+        </Box>
+    );
 };
 
 export default TopAreas;

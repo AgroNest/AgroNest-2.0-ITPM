@@ -1,24 +1,24 @@
 import React from 'react';
+import { Box } from '@mui/material';
 import AddTopfertilizer from '../../Component/kande/AddTopfertilizer';
 import backgroundImage from '../../images/common/background.avif';
-import '../../styles/udana/dealer_profile.css';
 
 const Topfertilizer = () => {
   return (
-    <div
-      className="profile-page-container"
-      style={{
+    <Box
+      sx={{
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed',
         minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <header />
-      <div className="profile-page-content">
+      <Box sx={{ flexGrow: 1, padding: 2 }}>
         <AddTopfertilizer />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

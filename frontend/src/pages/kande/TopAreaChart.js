@@ -1,86 +1,91 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import { Box, Typography, CircularProgress } from '@mui/material';
 
 const TopAreasChart = () => {
-  const [topAreas, setTopAreas] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [topAreas, setTopAreas] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const chartRef = useRef(null);
+    const chartInstance = useRef(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8070/toparea/');
-        setTopAreas(response.data);
-        setLoading(false);
-        renderChart(response.data);
-      } catch (error) {
-        console.error('Error fetching top areas:', error);
-      }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8070/toparea/');
+                setTopAreas(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching top areas:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (!loading) {
+            renderChart();
+        }
+    }, [loading, topAreas]);
+
+    const renderChart = () => {
+        if (chartInstance.current) {
+            chartInstance.current.destroy();
+        }
+
+        const ctx = chartRef.current.getContext('2d');
+        chartInstance.current = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: topAreas.map((area) => area.area),
+                datasets: [
+                    {
+                        label: 'Number of Registrations',
+                        data: topAreas.map((area) => area.noofRegistrations),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Registrations',
+                        },
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Area',
+                        },
+                    },
+                },
+            },
+        });
     };
 
-    fetchData();
-  }, []);
-
-  const renderChart = (topAreas) => {
-    const ctx = document.getElementById('Arealinechart');
-
-    if (!ctx || !topAreas) return;
-
-    const areaNames = topAreas.map((area) => area.area);
-    const registrationData = topAreas.map((area) => area.noofRegistrations);
-
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: areaNames,
-        datasets: [
-          {
-            label: 'Number of Sales',
-            data: registrationData,
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)', // Red
-              'rgba(75, 192, 192, 0.2)', // Green
-              'rgba(54, 162, 235, 0.2)', // Blue
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)', // Red
-              'rgba(75, 192, 192, 1)', // Green
-              'rgba(54, 162, 235, 1)', // Blue
-              'rgba(255, 206, 86, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
-            fill: true,
-            tension: 0.4,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-  };
-
-  return (
-    <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div style={{ width: '600px', height: '400px' }}>
-          <h1>Top Areas</h1>
-          <canvas id="Arealinechart"></canvas>
-        </div>
-      )}
-    </div>
-  );
+    return (
+        <Box sx={{ width: 600, height: 400, margin: '0 auto' }}>
+            {loading ? (
+                <CircularProgress />
+            ) : (
+                <>
+                    <Typography variant="h5" align="center" fontWeight={700} gutterBottom>
+                        Top Areas
+                    </Typography>
+                    <canvas ref={chartRef}></canvas>
+                </>
+            )}
+        </Box>
+    );
 };
 
 export default TopAreasChart;

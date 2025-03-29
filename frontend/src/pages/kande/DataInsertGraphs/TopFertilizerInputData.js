@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import { Box, Typography, Paper, CircularProgress } from '@mui/material';
 
 const TopFertilizerInputData = () => {
   const [fertilizers, setFertilizers] = useState([]);
   const [loading, setLoading] = useState(true);
-  let chartInstance = null;
+  const chartRef = useRef(null);
+  const chartInstanceRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          'http://localhost:8070/order/displayAll'
-        );
+        const response = await axios.get('http://localhost:8070/order/displayAll');
         setFertilizers(response.data);
         setLoading(false);
         renderChart(response.data);
@@ -25,48 +25,36 @@ const TopFertilizerInputData = () => {
   }, []);
 
   const renderChart = (fertilizersData) => {
-    const ctxB = document.getElementById('TopFerDataInsertlinechart');
-
-    if (!ctxB || !fertilizersData) return;
+    const ctx = chartRef.current?.getContext('2d');
+    if (!ctx || !fertilizersData) return;
 
     const productMap = new Map();
-
     fertilizersData.forEach((fertilizer) => {
       const quantity = parseInt(fertilizer.quantity);
-      const name = fertilizer.name; // Product name
+      const name = fertilizer.name;
       if (!isNaN(quantity)) {
-        if (productMap.has(name)) {
-          productMap.set(name, productMap.get(name) + quantity); // Sum up quantities
-        } else {
-          productMap.set(name, quantity);
-        }
+        productMap.set(name, (productMap.get(name) || 0) + quantity);
       }
     });
 
     const labels = Array.from(productMap.keys());
     const data = labels.map((name) => productMap.get(name));
 
-    if (chartInstance) {
-      chartInstance.destroy();
+    if (chartInstanceRef.current) {
+      chartInstanceRef.current.destroy();
     }
 
-    chartInstance = new Chart(ctxB, {
+    chartInstanceRef.current = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: labels,
+        labels,
         datasets: [
           {
             label: 'Quantity',
-            data: data,
+            data,
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            fill: true,
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 2,
-            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-            pointBorderColor: '#fff',
-            pointBorderWidth: 2,
-            pointRadius: 5,
-            pointHoverRadius: 7,
             tension: 0.4,
           },
         ],
@@ -74,48 +62,29 @@ const TopFertilizerInputData = () => {
       options: {
         responsive: true,
         plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false,
-          },
+          legend: { display: false },
+          tooltip: { mode: 'index', intersect: false },
         },
         scales: {
           x: {
-            display: true,
             title: {
               display: true,
               text: 'Product Name',
               color: '#333',
-              font: {
-                weight: 1000,
-              },
+              font: { weight: 600 },
             },
-            grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
-            },
-            ticks: {
-              color: '#333',
-            },
+            ticks: { color: '#333' },
+            grid: { color: 'rgba(0, 0, 0, 0.1)' },
           },
           y: {
-            display: true,
             title: {
               display: true,
               text: 'Quantity',
               color: '#333',
-              font: {
-                weight: 1000,
-              },
+              font: { weight: 600 },
             },
-            grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
-            },
-            ticks: {
-              color: '#333',
-            },
+            ticks: { color: '#333' },
+            grid: { color: 'rgba(0, 0, 0, 0.1)' },
           },
         },
         animation: {
@@ -127,18 +96,18 @@ const TopFertilizerInputData = () => {
   };
 
   return (
-    <div>
+    <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" mt={4}>
       {loading ? (
-        <p>Loading...</p>
+        <CircularProgress />
       ) : (
-        <div style={{ width: '600px', height: '400px' }}>
-          <h1 style={{ fontWeight: '700', marginLeft: '50px' }}>
+        <Paper elevation={3} sx={{ p: 3, width: { xs: '90%', sm: '600px' } }}>
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
             Fertilizer Categories & Sales
-          </h1>
-          <canvas id="TopFerDataInsertlinechart"></canvas>
-        </div>
+          </Typography>
+          <canvas ref={chartRef} style={{ width: '100%', height: '300px' }}></canvas>
+        </Paper>
       )}
-    </div>
+    </Box>
   );
 };
 
