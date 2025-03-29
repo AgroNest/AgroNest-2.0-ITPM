@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Grid, makeStyles } from '@material-ui/core';
+import { TextField, Button, Grid, makeStyles } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +28,15 @@ const Form = ({ onSubmit }) => {
   };
 
   return (
-    <div className={classes.formContainer} style ={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '300px' }}>
+    <div
+      className={classes.formContainer}
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '300px',
+      }}
+    >
       <form className={classes.root} onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>

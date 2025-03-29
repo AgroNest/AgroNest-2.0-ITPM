@@ -1,6 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Tab, Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Grid } from '@mui/material';
+import {
+  Tab,
+  Tabs,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Box,
+  Grid,
+} from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,7 +39,9 @@ const DealerListComponent = () => {
   useEffect(() => {
     const fetchDealers = async () => {
       try {
-        const response = await axios.get('http://localhost:8070/farmerReport/dealers');
+        const response = await axios.get(
+          'http://localhost:8070/farmerReport/dealers'
+        );
         setDealers(response.data);
       } catch (error) {
         setError(error.message);
@@ -35,7 +55,9 @@ const DealerListComponent = () => {
 
   const fetchReplies = async (dealerId) => {
     try {
-      const response = await axios.get(`http://localhost:8070/farmerReport/replies/${dealerId}`);
+      const response = await axios.get(
+        `http://localhost:8070/farmerReport/replies/${dealerId}`
+      );
       setReplies(response.data);
     } catch (error) {
       console.error('Error fetching replies:', error);
@@ -44,8 +66,10 @@ const DealerListComponent = () => {
 
   const deleteReply = async (replyId) => {
     try {
-      await axios.delete(`http://localhost:8070/farmerReport/replies/${replyId}`);
-      setReplies(replies.filter(reply => reply._id !== replyId));
+      await axios.delete(
+        `http://localhost:8070/farmerReport/replies/${replyId}`
+      );
+      setReplies(replies.filter((reply) => reply._id !== replyId));
       toast.success('Reply deleted successfully', { autoClose: 3000 }); // Notification disappears after 3 seconds
     } catch (error) {
       console.error('Error deleting reply:', error);
@@ -100,17 +124,24 @@ const DealerListComponent = () => {
         await handleUpdateClick();
       } else {
         // Perform create if not in edit mode
-        const response = await axios.post(`http://localhost:8070/farmerReport/dealers/${selectedDealer._id}/reply`, { replyText });
-      
+        const response = await axios.post(
+          `http://localhost:8070/farmerReport/dealers/${selectedDealer._id}/reply`,
+          { replyText }
+        );
+
         // Update the status to "Resolved"
-        await axios.put(`http://localhost:8070/farmerReport/dealers/${selectedDealer._id}/status`);
-  
+        await axios.put(
+          `http://localhost:8070/farmerReport/dealers/${selectedDealer._id}/status`
+        );
+
         // Update the local state of dealers
-        const updatedDealers = dealers.map(dealer => 
-          dealer._id === selectedDealer._id ? { ...dealer, status: 'Resolved' } : dealer
+        const updatedDealers = dealers.map((dealer) =>
+          dealer._id === selectedDealer._id
+            ? { ...dealer, status: 'Resolved' }
+            : dealer
         );
         setDealers(updatedDealers);
-  
+
         // Add the new reply to the list of replies
         setReplies([...replies, response.data]);
         toast.success('Reply sent successfully'); // Notification for successful reply
@@ -120,7 +151,7 @@ const DealerListComponent = () => {
       console.error('Error sending reply:', error);
       toast.error('Failed to send reply');
     }
-  
+
     // Close the popup window
     setOpenPopup(true);
   };
@@ -128,10 +159,13 @@ const DealerListComponent = () => {
   const handleUpdateClick = async () => {
     try {
       const updatedReply = { ...editedReply, replyText }; // Combine edited reply with updated text
-      const response = await axios.put(`http://localhost:8070/farmerReport/replies/${editedReply._id}`, { replyText });
+      const response = await axios.put(
+        `http://localhost:8070/farmerReport/replies/${editedReply._id}`,
+        { replyText }
+      );
 
       // Update the local state of replies with the updated reply
-      const updatedReplies = replies.map(reply =>
+      const updatedReplies = replies.map((reply) =>
         reply._id === editedReply._id ? { ...reply, replyText } : reply
       );
       setReplies(updatedReplies);
@@ -155,25 +189,27 @@ const DealerListComponent = () => {
 
   // set order High - low
   const pendingDealers = dealers
-    .filter(dealer => dealer.status === 'Pending')
+    .filter((dealer) => dealer.status === 'Pending')
     .sort((a, b) => {
       const priorityOrder = { High: 1, Medium: 2, Low: 3 };
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
 
-  const resolvedDealers = dealers.filter(dealer => dealer.status === 'Resolved');
+  const resolvedDealers = dealers.filter(
+    (dealer) => dealer.status === 'Resolved'
+  );
 
   return (
     <Grid container>
       <Grid item xs={9}>
-        <Box bgcolor='#cde3c3'>
+        <Box bgcolor="#cde3c3">
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab 
-              label="Pending" 
+            <Tab
+              label="Pending"
               sx={{ color: 'green', '&.Mui-selected': { color: 'green' } }}
             />
-            <Tab 
-              label="Resolved" 
+            <Tab
+              label="Resolved"
               sx={{ color: 'green', '&.Mui-selected': { color: 'green' } }}
             />
           </Tabs>
@@ -196,7 +232,10 @@ const DealerListComponent = () => {
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                   />
-                  <Button onClick={handleReplyClick}>{editMode ? 'Update' : 'Send'}</Button> {/* Change button text based on edit mode */}
+                  <Button onClick={handleReplyClick}>
+                    {editMode ? 'Update' : 'Send'}
+                  </Button>{' '}
+                  {/* Change button text based on edit mode */}
                 </div>
               )}
               {tabValue === 1 && (
@@ -204,8 +243,15 @@ const DealerListComponent = () => {
                   {replies.map((reply) => (
                     <div key={reply._id}>
                       <p>{reply.replyText}</p>
-                      <Button onClick={() => handleDeleteConfirmation(reply._id)}>Delete</Button>
-                      <Button onClick={() => handleEditClick(reply)}>Edit</Button> {/* Add edit button */}
+                      <Button
+                        onClick={() => handleDeleteConfirmation(reply._id)}
+                      >
+                        Delete
+                      </Button>
+                      <Button onClick={() => handleEditClick(reply)}>
+                        Edit
+                      </Button>{' '}
+                      {/* Add edit button */}
                     </div>
                   ))}
                   <TextField
@@ -216,7 +262,10 @@ const DealerListComponent = () => {
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                   />
-                  <Button onClick={handleReplyClick}>{editMode ? 'Update' : 'Send'}</Button> {/* Change button text based on edit mode */}
+                  <Button onClick={handleReplyClick}>
+                    {editMode ? 'Update' : 'Send'}
+                  </Button>{' '}
+                  {/* Change button text based on edit mode */}
                 </div>
               )}
             </DialogContent>
@@ -240,7 +289,10 @@ const DealerListComponent = () => {
             </DialogActions>
           </Dialog>
           {tabValue === 0 && (
-            <TableContainer component={Paper} style={{ width: 1060, height: 600, bgcolor:'#cde3c3' }}>
+            <TableContainer
+              component={Paper}
+              style={{ width: 1060, height: 600, bgcolor: '#cde3c3' }}
+            >
               <Table>
                 <TableHead>
                   <TableRow>
@@ -263,7 +315,10 @@ const DealerListComponent = () => {
                       <TableCell>{dealer.area}</TableCell>
                       <TableCell>{dealer.status}</TableCell>
                       <TableCell>
-                        <Button variant="contained" onClick={() => handleViewClick(dealer)}>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleViewClick(dealer)}
+                        >
                           View
                         </Button>
                       </TableCell>
@@ -274,7 +329,10 @@ const DealerListComponent = () => {
             </TableContainer>
           )}
           {tabValue === 1 && (
-            <TableContainer component={Paper} style={{ width: 1060, height: 600, bgcolor:'#cde3c3' }}>
+            <TableContainer
+              component={Paper}
+              style={{ width: 1060, height: 600, bgcolor: '#cde3c3' }}
+            >
               <Table>
                 <TableHead>
                   <TableRow>
@@ -288,12 +346,17 @@ const DealerListComponent = () => {
                 <TableBody>
                   {resolvedDealers.map((dealer) => (
                     <TableRow key={dealer._id}>
-                      <TableCell sx={{ width: '100px' }}>{dealer.name}</TableCell>
+                      <TableCell sx={{ width: '100px' }}>
+                        {dealer.name}
+                      </TableCell>
                       <TableCell>{dealer.topic}</TableCell>
                       <TableCell>{dealer.description}</TableCell>
                       <TableCell>{dealer.status}</TableCell>
                       <TableCell>
-                        <Button variant="contained" onClick={() => handleViewClick(dealer)}>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleViewClick(dealer)}
+                        >
                           View
                         </Button>
                       </TableCell>

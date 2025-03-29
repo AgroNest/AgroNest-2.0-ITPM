@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Button, TextField, IconButton, styled } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  TextField,
+  IconButton,
+  styled,
+} from '@mui/material';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
@@ -14,7 +22,7 @@ const Container = styled('div')({
   height: 'calc(100vh - 150px)',
   backgroundColor: 'rgba(255, 255, 255, 0)',
   position: 'fixed',
-  top: '75px', 
+  top: '75px',
   left: '50%',
   transform: 'translateX(-50%)',
 });
@@ -44,7 +52,7 @@ function UploadFile() {
   const [file, setFile] = useState(null);
   const [dragging, setDragging] = useState(false);
   const [removingFile, setRemovingFile] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUserName = sessionStorage.getItem('userName');
@@ -56,7 +64,7 @@ function UploadFile() {
   const handleFileUpload = async (e) => {
     e.preventDefault();
     if (!file) {
-      alert("Please select a file before submitting.");
+      alert('Please select a file before submitting.');
       return;
     }
 
@@ -66,18 +74,21 @@ function UploadFile() {
     formData.append('requestId', requestId);
 
     try {
-      await axios.post('http://localhost:8070/labReport/upload-files', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      alert("Successfully uploaded");
+      await axios.post(
+        'http://localhost:8070/labReport/upload-files',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      );
+      alert('Successfully uploaded');
       navigate('/completed');
     } catch (error) {
       console.error('Error uploading file:', error);
-      alert("An error occurred while uploading. Please try again later.");
+      alert('An error occurred while uploading. Please try again later.');
     }
   };
 
-  
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
@@ -112,22 +123,35 @@ function UploadFile() {
   };
 
   const removeFile = () => {
-    setRemovingFile(true); 
+    setRemovingFile(true);
     setFile(null);
-    setRemovingFile(false); 
+    setRemovingFile(false);
   };
 
   return (
     <div style={{ paddingTop: '70px' }}>
-      <AppBar position="fixed" style={{ marginTop: '108px', backgroundColor: '#0F5132' }}>
+      <AppBar
+        position="fixed"
+        style={{ marginTop: '108px', backgroundColor: '#0F5132' }}
+      >
         <Toolbar style={{ justifyContent: 'space-between' }}>
-          <Typography variant="h5" component="div" sx={{ flexGrow: 0, color: 'white' }}>
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{ flexGrow: 0, color: 'white' }}
+          >
             Upload File
           </Typography>
-          <Typography variant="body1" style={{ color: 'white', marginRight: '-1100px' }}>
+          <Typography
+            variant="body1"
+            style={{ color: 'white', marginRight: '-1100px' }}
+          >
             Hello {userName}
           </Typography>
-          <Link to="/labProfile" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link
+            to="/labProfile"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
             <IconButton>
               <AccountCircleIcon />
             </IconButton>
@@ -157,14 +181,20 @@ function UploadFile() {
                 onDragEnter={handleDragEnter}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                style={{ border: dragging ? '2px dashed #0F5132' : '1px dashed #0F5132' }}
+                style={{
+                  border: dragging
+                    ? '2px dashed #0F5132'
+                    : '1px dashed #0F5132',
+                }}
               >
                 {file ? (
                   <>
                     <Typography variant="body2" gutterBottom>
                       Selected: {file.name}
                     </Typography>
-                    <Button variant="outlined" onClick={removeFile}>Remove</Button>
+                    <Button variant="outlined" onClick={removeFile}>
+                      Remove
+                    </Button>
                   </>
                 ) : (
                   <Typography variant="body2" gutterBottom>
@@ -172,11 +202,29 @@ function UploadFile() {
                   </Typography>
                 )}
               </DropArea>
-              <input type="file" accept="application/pdf" onChange={handleFileChange} style={{ display: 'none' }} />
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+              />
               <center>
-                <Button variant="contained" component="label" style={{ marginTop: '10px', backgroundColor: '#0F5132', color: 'white' }}>
+                <Button
+                  variant="contained"
+                  component="label"
+                  style={{
+                    marginTop: '10px',
+                    backgroundColor: '#0F5132',
+                    color: 'white',
+                  }}
+                >
                   Browse
-                  <input type="file" accept="application/pdf" onChange={handleFileChange} style={{ display: 'none' }} />
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                  />
                 </Button>
                 <br />
                 <br />

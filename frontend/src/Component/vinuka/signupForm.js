@@ -49,7 +49,10 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/lab_account/labAccounts/add', formData);
+      const response = await axios.post(
+        '/api/lab_account/labAccounts/add',
+        formData
+      );
       console.log(response.data);
       alert('Signup Successful!');
       navigate.push('/labLogin');
@@ -134,7 +137,12 @@ const SignupForm = () => {
             variant="outlined"
           />
         </div>
-        <Button type="submit" className={classes.submitButton} variant="contained" color="primary">
+        <Button
+          type="submit"
+          className={classes.submitButton}
+          variant="contained"
+          color="primary"
+        >
           Sign Up
         </Button>
       </form>

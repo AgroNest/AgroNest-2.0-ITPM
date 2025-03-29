@@ -35,7 +35,7 @@ const ImageButton = styled(ButtonBase)(({ theme }) => ({
   margin: '10px',
   marginBottom: '10px', // Adjust marginBottom for space between buttons
   [theme.breakpoints.down('sm')]: {
-    width: '100% !important', 
+    width: '100% !important',
     height: 100,
   },
   '&:hover, &.Mui-focusVisible': {
@@ -101,12 +101,13 @@ const TestServices = () => {
       <Sidebar />
       <Grid container spacing={0} justifyContent="center" alignItems="center">
         {images.map((image, index) => (
-          <Grid item xs={4} key={index} sx={{ textAlign: 'center', marginLeft: index % 2 === 0 ? 15 : 5 }}> 
-            <ImageButton
-              component={Link}
-              to={image.link}
-              focusRipple
-            >
+          <Grid
+            item
+            xs={4}
+            key={index}
+            sx={{ textAlign: 'center', marginLeft: index % 2 === 0 ? 15 : 5 }}
+          >
+            <ImageButton component={Link} to={image.link} focusRipple>
               <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
               <ImageBackdrop className="MuiImageBackdrop-root" />
               <Image>

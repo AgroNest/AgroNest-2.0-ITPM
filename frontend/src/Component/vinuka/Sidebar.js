@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Sidebar = ({farmerID}) => {
-  console.log("farmerID in Sidebar:", farmerID);
+const Sidebar = ({ farmerID }) => {
+  console.log('farmerID in Sidebar:', farmerID);
   const classes = useStyles();
 
   return (
@@ -43,7 +43,11 @@ const Sidebar = ({farmerID}) => {
       anchor="left"
     >
       <List>
-        <ListItem button component={Link} to={`/Profile/${localStorage.getItem('logId')}`}>
+        <ListItem
+          button
+          component={Link}
+          to={`/Profile/${localStorage.getItem('logId')}`}
+        >
           <ListItemIcon>
             <AccountCircleIcon />
           </ListItemIcon>

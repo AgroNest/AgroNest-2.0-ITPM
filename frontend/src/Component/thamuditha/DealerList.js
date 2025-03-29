@@ -1,7 +1,18 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { Box, IconButton, Menu, MenuItem, Grid, Typography } from '@mui/material';
-import {  Delete as DeleteIcon, Email as EmailIcon, GetApp as GetAppIcon } from '@mui/icons-material';
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Grid,
+  Typography,
+} from '@mui/material';
+import {
+  Delete as DeleteIcon,
+  Email as EmailIcon,
+  GetApp as GetAppIcon,
+} from '@mui/icons-material';
 import axios from 'axios';
 import ConfirmationDialog from './ConfirmationDialog';
 import Sidebar from './Sidebar';
@@ -56,23 +67,24 @@ export const Example = () => {
         header: 'Location',
         size: 120,
       },
-      
     ],
     []
   );
 
   const handleExportCSV = () => {
     // Convert data to CSV format
-    const csvContent = "data:text/csv;charset=utf-8," + data.map(row => Object.values(row).join(",")).join("\n");
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      data.map((row) => Object.values(row).join(',')).join('\n');
     const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "dealers.csv");
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'dealers.csv');
     document.body.appendChild(link);
     link.click();
   };
 
-  const handleMenuOpen = event => {
+  const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -88,9 +100,11 @@ export const Example = () => {
   const handleDelete = async () => {
     const id = selectedDealer._id;
     try {
-      const response = await axios.delete(`http://localhost:8070/viewdealers/delete/${id}`);
+      const response = await axios.delete(
+        `http://localhost:8070/viewdealers/delete/${id}`
+      );
       if (response.status === 200) {
-        const newData = data.filter(dealer => dealer._id !== id);
+        const newData = data.filter((dealer) => dealer._id !== id);
         setData(newData);
       } else {
         console.error('Failed to delete dealer:', response.data.message);
@@ -109,8 +123,16 @@ export const Example = () => {
           <Sidebar />
         </Grid>
         <Grid item xs={9} style={{ marginLeft: '265px' }}>
-          <Typography variant="h6" style={{ marginBottom: '-10px' }}>Registered Dealers</Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="h6" style={{ marginBottom: '-10px' }}>
+            Registered Dealers
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <Typography variant="h6"> </Typography>
             <IconButton onClick={handleExportCSV}>
               <GetAppIcon />
@@ -145,9 +167,7 @@ export const Example = () => {
                   onClick={() => {
                     table.setEditingRow(row);
                   }}
-                >
-                  
-                </IconButton>
+                ></IconButton>
                 <IconButton
                   color="error"
                   onClick={() => handleDeleteConfirmation(row.original)}
@@ -156,7 +176,7 @@ export const Example = () => {
                 </IconButton>
               </Box>
             )}
-            toolbar={(
+            toolbar={
               <div>
                 <IconButton onClick={handleMenuOpen}>
                   <GetAppIcon />
@@ -169,7 +189,7 @@ export const Example = () => {
                   <MenuItem onClick={handleExportCSV}>Export CSV</MenuItem>
                 </Menu>
               </div>
-            )}
+            }
           />
         </Grid>
       </Grid>

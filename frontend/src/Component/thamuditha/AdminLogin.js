@@ -47,7 +47,6 @@ const AdminLogin = ({ setIsLoggedIn }) => {
       setTimeout(() => {
         navigate('/admin/home');
       }, 3000);
-      
     } catch (error) {
       setError('Invalid username or password');
       setErrorMessage('Login failed. Invalid username or password.');
@@ -72,7 +71,9 @@ const AdminLogin = ({ setIsLoggedIn }) => {
             backgroundImage: `url(${paddy})`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+              t.palette.mode === 'light'
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -86,8 +87,8 @@ const AdminLogin = ({ setIsLoggedIn }) => {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              height: '100%', 
-              paddingTop: '2rem', 
+              height: '100%',
+              paddingTop: '2rem',
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
@@ -97,7 +98,12 @@ const AdminLogin = ({ setIsLoggedIn }) => {
               Administrator Login
             </Typography>
 
-            <Box component="form" noValidate onSubmit={handleLogin} sx={{ mt: 1, width: '100%' }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleLogin}
+              sx={{ mt: 1, width: '100%' }}
+            >
               <TextField
                 margin="normal"
                 required
@@ -110,7 +116,7 @@ const AdminLogin = ({ setIsLoggedIn }) => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 InputProps={{
-                  sx: { borderRadius: '20px' } 
+                  sx: { borderRadius: '20px' },
                 }}
               />
               <TextField
@@ -125,7 +131,7 @@ const AdminLogin = ({ setIsLoggedIn }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 InputProps={{
-                  sx: { borderRadius: '20px' } 
+                  sx: { borderRadius: '20px' },
                 }}
               />
               <FormControlLabel
@@ -138,25 +144,32 @@ const AdminLogin = ({ setIsLoggedIn }) => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2, borderRadius: '20px' }}
               >
-               Administrator Login
+                Administrator Login
               </Button>
-              
+
               <Grid container justifyContent="flex-end">
-                <Grid item xs>
-                  
-                </Grid>
-                <Grid item>
-                  
-                </Grid>
+                <Grid item xs></Grid>
+                <Grid item></Grid>
               </Grid>
             </Box>
           </Box>
         </Grid>
       </Grid>
 
-      {successMessage && <PopupMessage message={successMessage} type="success" onClose={handleClosePopup} />}
-      {errorMessage && <PopupMessage message={errorMessage} type="error" onClose={handleClosePopup} />}
-
+      {successMessage && (
+        <PopupMessage
+          message={successMessage}
+          type="success"
+          onClose={handleClosePopup}
+        />
+      )}
+      {errorMessage && (
+        <PopupMessage
+          message={errorMessage}
+          type="error"
+          onClose={handleClosePopup}
+        />
+      )}
     </ThemeProvider>
   );
 };

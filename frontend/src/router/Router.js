@@ -25,7 +25,7 @@ import FeedbackCardView from '../pages/thamuditha/FeedbackPages/FeedbackCardView
 import DealerRating from '../pages/thamuditha/FeedbackPages/DealerRating';
 //Oshini
 import LabSignUp from '../pages/vinuka/signup';
-import LabLogin from '../pages/vinuka/labLogin'
+import LabLogin from '../pages/vinuka/labLogin';
 import LabDash from '../pages/vinuka/labDash';
 import LabProfile from '../pages/vinuka/labProfile';
 import LabEdit from '../pages/vinuka/labEdit';
@@ -65,17 +65,17 @@ import FullWidthTabs from '../Component/thamuditha/FullWidthTabs';
 import AdminLogin from '../Component/thamuditha/AdminLogin';
 import AdminDashboard from '../pages/thamuditha/AdminDashboard';
 //Kande
-import TopFertilizer from  '../pages/kande/TopfertilizerScreen';
+import TopFertilizer from '../pages/kande/TopfertilizerScreen';
 import AddTopAreas from '../pages/kande/TopAreaScreen';
 import SysManagerDashboard from '../pages/kande/SysManagerDashboard';
 import ViewTopFertilizer from '../pages/kande/ViewTopFertilizer';
 import MLogin from '../Component/kande/login/MLogin';
 import TopArea from '../pages/kande/TopAreaScreen';
-import AddTopfertilizer from'../Component/kande/AddTopSelling'
+import AddTopfertilizer from '../Component/kande/AddTopSelling';
 import ViewTopSellers from '../pages/kande/ViewTopSelling';
-import  ViewTopRegisterdArea from'../pages/kande/ViewTopAreas'
-import AddAdminForm from '../Component/kande/FormCntainer/Form'
-import ViewAdmin from '../Component/kande/ViewAdmins'
+import ViewTopRegisterdArea from '../pages/kande/ViewTopAreas';
+import AddAdminForm from '../Component/kande/FormCntainer/Form';
+import ViewAdmin from '../Component/kande/ViewAdmins';
 
 const Router = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -85,26 +85,35 @@ const Router = () => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-    }else {
-      setIsLoggedIn(false); 
+    } else {
+      setIsLoggedIn(false);
     }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
-    navigate('/'); 
+    navigate('/');
   };
 
   return (
     <>
       {isLoggedIn && <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />}
-      
+
       <Routes>
         <Route path="/" element={<LandingPage isLoggedIn={isLoggedIn} />} />
-        <Route path="/loginDealer" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/signupDealer" element={<SignupPage setIsLoggedIn={setIsLoggedIn} />} />
-        <Route path="/profileDealer" element={<DealerProf isLoggedIn={isLoggedIn} />} />
+        <Route
+          path="/loginDealer"
+          element={<LoginPage setIsLoggedIn={setIsLoggedIn} />}
+        />
+        <Route
+          path="/signupDealer"
+          element={<SignupPage setIsLoggedIn={setIsLoggedIn} />}
+        />
+        <Route
+          path="/profileDealer"
+          element={<DealerProf isLoggedIn={isLoggedIn} />}
+        />
         <Route path="/editProf" element={<EditProfile />} />
         <Route path="/manageShop" element={<ManageShop />} />
         <Route path="/orders" element={<Orders />} />
@@ -130,12 +139,18 @@ const Router = () => {
         <Route path="/pending-requests" element={<ViewRequests />} />
         <Route path="/soil-test/:requestId" element={<RequestDetails />} />
         <Route path="/update-request/:requestId" element={<UpdateRequest />} />
-        <Route path="/Login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route
+          path="/Login"
+          element={<Login setIsLoggedIn={setIsLoggedIn} />}
+        />
         <Route path="/test-types" element={<TestType />} />
         <Route path="/resolved-requests" element={<ViewResolvedRequests />} />
         <Route path="/edit-profile/:farmerID" element={<UpdateProfile />} />
         <Route path="/labSignup" element={<LabSignUp />} />
-        <Route path="/labLogin" element={<LabLogin setIsLoggedIn={setIsLoggedIn} />} />
+        <Route
+          path="/labLogin"
+          element={<LabLogin setIsLoggedIn={setIsLoggedIn} />}
+        />
         <Route path="/labDash" element={<LabDash />} />
         <Route path="/labProfile" element={<LabProfile />} />
         <Route path="/labEdit" element={<LabEdit />} />
@@ -150,25 +165,37 @@ const Router = () => {
         <Route path="/Itemlist" element={<ItemList />} />
         <Route path="/Item/:id" element={<ItemView />} />
         <Route path="/Order-History" element={<OrderHistoryPage />} />
-        <Route path="/update-order/:id" element={<UpdateOrderDialog open={true} />} />
+        <Route
+          path="/update-order/:id"
+          element={<UpdateOrderDialog open={true} />}
+        />
         <Route path="/viewdealers" element={<DealerList />} />
         <Route path="/viewfarmers" element={<FarmerList />} />
         <Route path="/labrotaryview" element={<LabCards />} />
         <Route path="/userreports" element={<FullWidthTabs />} />
-        <Route path="/admin/login" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
+        <Route
+          path="/admin/login"
+          element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />}
+        />
         <Route path="/admin/home" element={<AdminDashboard />} />
         <Route path="/form" element={<Form />} />
         <Route path="/datatable" element={<DataTable />} />
         <Route path="/gmail" element={<GmailButton />} />
         <Route path="/addtopfertilizers" element={<TopFertilizer />} />
         <Route path="/viewtopfertilizers" element={<ViewTopFertilizer />} />
-        <Route path="/addtopsellingfertilizers" element={<AddTopfertilizer />} />
+        <Route
+          path="/addtopsellingfertilizers"
+          element={<AddTopfertilizer />}
+        />
         <Route path="/addtopareas" element={<AddTopAreas />} />
         <Route path="/managerdashboard" element={<SysManagerDashboard />} />
         <Route path="/MLogin" element={<MLogin />} />
         <Route path="/TopArea" element={<TopArea />} />
         <Route path="/TopSellers" element={<ViewTopSellers />} />
-        <Route path="/ViewTopRegisterdArea" element={<ViewTopRegisterdArea />} />
+        <Route
+          path="/ViewTopRegisterdArea"
+          element={<ViewTopRegisterdArea />}
+        />
         <Route path="/addadmin" element={<AddAdminForm />} />
         <Route path="/viewadmin" element={<ViewAdmin />} />
       </Routes>

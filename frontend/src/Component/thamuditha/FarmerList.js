@@ -1,7 +1,19 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { Box, IconButton, Menu, MenuItem, Grid, Typography } from '@mui/material';
-import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon, GetApp as GetAppIcon } from '@mui/icons-material';
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Grid,
+  Typography,
+} from '@mui/material';
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Email as EmailIcon,
+  GetApp as GetAppIcon,
+} from '@mui/icons-material';
 import axios from 'axios';
 import ConfirmationDialog from './ConfirmationDialog';
 import Sidebar from './Sidebar';
@@ -46,22 +58,23 @@ export const Example = () => {
         header: 'Phone',
         size: 110,
       },
-      
     ],
     []
   );
 
   const handleExportCSV = () => {
-    const csvContent = "data:text/csv;charset=utf-8," + data.map(row => Object.values(row).join(",")).join("\n");
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      data.map((row) => Object.values(row).join(',')).join('\n');
     const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "farmers.csv");
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'farmers.csv');
     document.body.appendChild(link);
     link.click();
   };
 
-  const handleMenuOpen = event => {
+  const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -77,9 +90,11 @@ export const Example = () => {
   const handleDelete = async () => {
     const id = selectedFarmer._id;
     try {
-      const response = await axios.delete(`http://localhost:8070/viewfarmers/delete/${id}`); // Delete farmer
+      const response = await axios.delete(
+        `http://localhost:8070/viewfarmers/delete/${id}`
+      ); // Delete farmer
       if (response.status === 200) {
-        const newData = data.filter(farmer => farmer._id !== id);
+        const newData = data.filter((farmer) => farmer._id !== id);
         setData(newData);
       } else {
         console.error('Failed to delete farmer:', response.data.message);
@@ -93,13 +108,24 @@ export const Example = () => {
 
   return (
     <div style={{ marginTop: '120px' }}>
-      <Typography variant="h6" style={{ marginLeft: '265px', marginBottom: '-10px' }}>Registered Farmers</Typography>
+      <Typography
+        variant="h6"
+        style={{ marginLeft: '265px', marginBottom: '-10px' }}
+      >
+        Registered Farmers
+      </Typography>
       <Grid container>
         <Grid item xs={3}>
           <Sidebar />
         </Grid>
         <Grid item xs={9} style={{ marginLeft: '265px' }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <Typography variant="h6"> </Typography>
             <IconButton onClick={handleExportCSV}>
               <GetAppIcon />
@@ -134,9 +160,7 @@ export const Example = () => {
                   onClick={() => {
                     table.setEditingRow(row);
                   }}
-                >
-                  
-                </IconButton>
+                ></IconButton>
                 <IconButton
                   color="error"
                   onClick={() => handleDeleteConfirmation(row.original)}
@@ -145,7 +169,7 @@ export const Example = () => {
                 </IconButton>
               </Box>
             )}
-            toolbar={(
+            toolbar={
               <div>
                 <IconButton onClick={handleMenuOpen}>
                   <GetAppIcon />
@@ -158,7 +182,7 @@ export const Example = () => {
                   <MenuItem onClick={handleExportCSV}>Export CSV</MenuItem>
                 </Menu>
               </div>
-            )}
+            }
           />
         </Grid>
       </Grid>

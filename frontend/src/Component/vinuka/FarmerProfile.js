@@ -13,7 +13,9 @@ const FarmerProfile = () => {
   useEffect(() => {
     const fetchFarmerData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/Farmer/get/${farmerID}`);
+        const response = await axios.get(
+          `http://localhost:8070/Farmer/get/${farmerID}`
+        );
         setFarmerData(response.data.farmer);
         setError(null);
       } catch (error) {
@@ -86,7 +88,11 @@ const FarmerProfile = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Button onClick={handleEditProfile} variant="contained" color="primary">
+                  <Button
+                    onClick={handleEditProfile}
+                    variant="contained"
+                    color="primary"
+                  >
                     Edit Profile
                   </Button>
                 </Grid>

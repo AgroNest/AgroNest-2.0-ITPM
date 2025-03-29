@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, styled } from '@mui/material';
-import axios from 'axios'; 
-
+import axios from 'axios';
 
 const Container = styled('div')({
   width: '100%',
@@ -11,7 +10,7 @@ const Container = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  height: '100vh', 
+  height: '100vh',
   backgroundColor: 'rgba(255, 255, 255, 0.7)',
   position: 'fixed',
   bottom: '60px',
@@ -25,7 +24,7 @@ const FormContainer = styled('div')({
   maxWidth: 500,
   margin: '0 auto',
   padding: '20px',
-  border: '1px solid #ccc', 
+  border: '1px solid #ccc',
   borderRadius: '5px',
 });
 
@@ -52,7 +51,6 @@ const SignupForm = () => {
     });
 
     if (e.target.name === 'phone') {
-      
       if (!/^[0-9]{10}$/.test(e.target.value)) {
         setPhoneError('Invalid phone number');
       } else {
@@ -62,11 +60,14 @@ const SignupForm = () => {
 
     if (e.target.name === 'userName') {
       try {
-        const response = await axios.get('http://localhost:8070/labAccount/checkUserName', {
-          params: {
-            userName: e.target.value
+        const response = await axios.get(
+          'http://localhost:8070/labAccount/checkUserName',
+          {
+            params: {
+              userName: e.target.value,
+            },
           }
-        });
+        );
         if (response.data.status) {
           setUsernameError('Username already exists');
         } else {
@@ -77,14 +78,16 @@ const SignupForm = () => {
         alert('Error in fetching usernames.');
       }
     }
-    
   };
 
   const handleSignup = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     if (formData.userName && !phoneError && !usernameError) {
       try {
-        const response = await axios.post('http://localhost:8070/labAccount/add', formData);
+        const response = await axios.post(
+          'http://localhost:8070/labAccount/add',
+          formData
+        );
         console.log(response.data);
         alert('Signup Successful!');
         navigate('/labLogin');
@@ -92,11 +95,11 @@ const SignupForm = () => {
         console.error('Error:', error);
         alert('Signup Failed! Please try again later.');
       } finally {
-        setButtonDisabled(false); 
+        setButtonDisabled(false);
       }
     }
   };
-  
+
   return (
     <form onSubmit={(e) => handleSignup(e)}>
       <Container>
@@ -178,12 +181,7 @@ const SignupForm = () => {
             />
           </div>
           <div style={{ marginTop: '20px' }}>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-            >
+            <Button type="submit" variant="contained" color="primary" fullWidth>
               Sign Up
             </Button>
           </div>

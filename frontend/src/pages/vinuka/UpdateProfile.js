@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Grid, Paper } from '@mui/material';
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Paper,
+} from '@mui/material';
 
 const UpdateProfile = () => {
   const { farmerID } = useParams();
@@ -14,14 +21,16 @@ const UpdateProfile = () => {
     district: '',
     city: '',
     userName: '',
-    password: ''
+    password: '',
   });
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchFarmerData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/Farmer/get/${farmerID}`);
+        const response = await axios.get(
+          `http://localhost:8070/Farmer/get/${farmerID}`
+        );
         const farmer = response.data.farmer;
         setFormData({
           first_name: farmer.first_name,
@@ -31,7 +40,7 @@ const UpdateProfile = () => {
           district: farmer.district,
           city: farmer.city,
           userName: farmer.userName,
-          password: farmer.password
+          password: farmer.password,
         });
         setError(null);
       } catch (error) {
@@ -46,7 +55,7 @@ const UpdateProfile = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -54,8 +63,11 @@ const UpdateProfile = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:8070/Farmer/update/${farmerID}`, formData);
-      navigate(`/farmer/${farmerID}`)
+      await axios.put(
+        `http://localhost:8070/Farmer/update/${farmerID}`,
+        formData
+      );
+      navigate(`/farmer/${farmerID}`);
       // Redirect or show success message
     } catch (error) {
       console.error('Error updating farmer data:', error);
@@ -65,7 +77,7 @@ const UpdateProfile = () => {
 
   return (
     <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ padding: '20px', marginTop:20}}>
+      <Paper elevation={3} sx={{ padding: '20px', marginTop: 20 }}>
         <Typography variant="h5" gutterBottom>
           Edit Profile
         </Typography>

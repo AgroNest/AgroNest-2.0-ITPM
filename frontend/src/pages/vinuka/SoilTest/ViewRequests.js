@@ -43,7 +43,9 @@ const ViewRequests = () => {
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:8070/SoilTest/getPendingRequests');
+        const response = await axios.get(
+          'http://localhost:8070/SoilTest/getPendingRequests'
+        );
         setPendingRequests(response.data);
       } catch (error) {
         console.error('Error fetching soil test requests:', error);
@@ -68,9 +70,13 @@ const ViewRequests = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8070/SoilTest/delete/${selectedRequestId}`);
+      await axios.delete(
+        `http://localhost:8070/SoilTest/delete/${selectedRequestId}`
+      );
 
-      const response = await axios.get('http://localhost:8070/SoilTest/getPendingRequests');
+      const response = await axios.get(
+        'http://localhost:8070/SoilTest/getPendingRequests'
+      );
       setPendingRequests(response.data);
     } catch (error) {
       console.error('Error deleting soil test request:', error);
@@ -88,9 +94,12 @@ const ViewRequests = () => {
   return (
     <div>
       <Sidebar />
-      <div style={{ maxWidth: 800, paddingLeft: '500px', marginTop:'200px' }}>
+      <div style={{ maxWidth: 800, paddingLeft: '500px', marginTop: '200px' }}>
         <h2>Soil Test Requests</h2>
-        <TableContainer component={Paper} style={{ height: '100%', width: '800px' }}>
+        <TableContainer
+          component={Paper}
+          style={{ height: '100%', width: '800px' }}
+        >
           <Table aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -107,9 +116,15 @@ const ViewRequests = () => {
                   </StyledTableCell>
                   <StyledTableCell>{request.status}</StyledTableCell>
                   <StyledTableCell>
-                    <button onClick={() => handleView(request._id)}>View</button>
-                    <button onClick={() => handleUpdate(request._id)}>Update</button>
-                    <button onClick={() => handleDelete(request._id)}>Delete</button>
+                    <button onClick={() => handleView(request._id)}>
+                      View
+                    </button>
+                    <button onClick={() => handleUpdate(request._id)}>
+                      Update
+                    </button>
+                    <button onClick={() => handleDelete(request._id)}>
+                      Delete
+                    </button>
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
@@ -125,11 +140,34 @@ const ViewRequests = () => {
         aria-labelledby="delete-confirmation-modal-title"
         aria-describedby="delete-confirmation-modal-description"
       >
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: 20 }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            padding: 20,
+          }}
+        >
           <h2 id="delete-confirmation-modal-title">Confirm Delete</h2>
-          <p id="delete-confirmation-modal-description">Are you sure you want to delete the request?</p>
-          <Button onClick={handleConfirmDelete} variant="contained" color="error">Yes</Button>
-          <Button onClick={handleCloseModal} variant="contained" color="primary">No</Button>
+          <p id="delete-confirmation-modal-description">
+            Are you sure you want to delete the request?
+          </p>
+          <Button
+            onClick={handleConfirmDelete}
+            variant="contained"
+            color="error"
+          >
+            Yes
+          </Button>
+          <Button
+            onClick={handleCloseModal}
+            variant="contained"
+            color="primary"
+          >
+            No
+          </Button>
         </div>
       </Modal>
     </div>

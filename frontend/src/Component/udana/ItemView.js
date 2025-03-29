@@ -1,6 +1,20 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Container, Typography, Grid, Button, Paper, Box, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Grid,
+  Button,
+  Paper,
+  Box,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 const ItemView = () => {
@@ -9,41 +23,53 @@ const ItemView = () => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
   const [quantity, setQuantity] = React.useState(1);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState(null);
-  const [paymentInfo, setPaymentInfo] = React.useState({ cardNumber: '', expiryDate: '', cvv: '' });
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    React.useState(null);
+  const [paymentInfo, setPaymentInfo] = React.useState({
+    cardNumber: '',
+    expiryDate: '',
+    cvv: '',
+  });
   const [openPaymentDialog, setOpenPaymentDialog] = React.useState(false);
-  const [openPaymentInfoDialog, setOpenPaymentInfoDialog] = React.useState(false);
+  const [openPaymentInfoDialog, setOpenPaymentInfoDialog] =
+    React.useState(false);
   const [isPayNowDisabled, setIsPayNowDisabled] = React.useState(true);
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false);
-  const [openConfirmationDialog, setOpenConfirmationDialog] = React.useState(false);
+  const [openConfirmationDialog, setOpenConfirmationDialog] =
+    React.useState(false);
 
   React.useEffect(() => {
-    axios.get(`http://localhost:8070/item/get/${id}`)
+    axios
+      .get(`http://localhost:8070/item/get/${id}`)
       .then((res) => {
         const { status, item } = res.data;
-        if (status === "Item Fetched") {
+        if (status === 'Item Fetched') {
           setItem(item);
           setLoading(false);
-          console.log("Item fetched successfully:", item);
+          console.log('Item fetched successfully:', item);
         } else {
           setLoading(false);
-          setError("Error fetching item");
-          console.error("Error fetching item:", res.data.error);
+          setError('Error fetching item');
+          console.error('Error fetching item:', res.data.error);
         }
       })
       .catch((error) => {
         setLoading(false);
-        setError("Error fetching item");
-        console.error("Error fetching item:", error);
+        setError('Error fetching item');
+        console.error('Error fetching item:', error);
       });
   }, [id]);
 
   React.useEffect(() => {
     const isValidCardNumber = /^[0-9]{16}$/.test(paymentInfo.cardNumber);
-    const isValidExpiryDate = /^(0[1-9]|1[0-2])\/[0-9]{4}$/.test(paymentInfo.expiryDate);
+    const isValidExpiryDate = /^(0[1-9]|1[0-2])\/[0-9]{4}$/.test(
+      paymentInfo.expiryDate
+    );
     const isValidCVV = /^[0-9]{3}$/.test(paymentInfo.cvv);
 
-    setIsPayNowDisabled(!(isValidCardNumber && isValidExpiryDate && isValidCVV));
+    setIsPayNowDisabled(
+      !(isValidCardNumber && isValidExpiryDate && isValidCVV)
+    );
   }, [paymentInfo]);
 
   const handleQuantityChange = (event) => {
@@ -70,23 +96,24 @@ const ItemView = () => {
 
   const handlePaymentInfoSubmit = () => {
     const farmer = localStorage.getItem('logId');
-    console.log("Token : ",farmer)
+    console.log('Token : ', farmer);
     const orderDetails = {
       name: item.name,
       itemcode: item.itemcode,
       quantity: quantity,
       price: getTotalPrice(),
-      farmerId: farmer
+      farmerId: farmer,
     };
 
-    axios.post('http://localhost:8070/order/add', orderDetails)
+    axios
+      .post('http://localhost:8070/order/add', orderDetails)
       .then((response) => {
-        console.log("Order placed successfully:", response);
+        console.log('Order placed successfully:', response);
         setOpenPaymentInfoDialog(false);
         setOpenSuccessSnackbar(true);
       })
       .catch((error) => {
-        console.error("Error placing order:", error);
+        console.error('Error placing order:', error);
       });
   };
 
@@ -99,12 +126,11 @@ const ItemView = () => {
   };
 
   const handleExpiryDateChange = (event) => {
-    const expiryDate = event.target.value.replace(
-      /[^0-9/]/g, ''
-    ).replace(
-      /(\d\d)\/?(\d\d)?/,
-      (_, m, y) => (m.length === 2 && parseInt(m, 10) <= 12 ? `${m}/${y || ''}` : '')
-    );
+    const expiryDate = event.target.value
+      .replace(/[^0-9/]/g, '')
+      .replace(/(\d\d)\/?(\d\d)?/, (_, m, y) =>
+        m.length === 2 && parseInt(m, 10) <= 12 ? `${m}/${y || ''}` : ''
+      );
     setPaymentInfo((prevInfo) => ({
       ...prevInfo,
       expiryDate: expiryDate,
@@ -125,17 +151,36 @@ const ItemView = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '120vh' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '120vh',
+      }}
+    >
       <Container maxWidth="md">
         {loading ? (
           <div>Loading...</div>
         ) : error ? (
           <div>Error: {error}</div>
         ) : (
-          <Paper elevation={3} style={{ padding: '20px', backgroundColor: 'white' }}>
-            <Grid container spacing={3} justifyContent="center" alignItems="center">
+          <Paper
+            elevation={3}
+            style={{ padding: '20px', backgroundColor: 'white' }}
+          >
+            <Grid
+              container
+              spacing={3}
+              justifyContent="center"
+              alignItems="center"
+            >
               <Grid item xs={12} md={6}>
-                <img src="/R.jfif" alt={item.name} style={{ width: '100%', height: 'auto' }} />
+                <img
+                  src="/R.jfif"
+                  alt={item.name}
+                  style={{ width: '100%', height: 'auto' }}
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Typography variant="h4" gutterBottom>
@@ -151,33 +196,42 @@ const ItemView = () => {
                   Available Quantity: {item.quantity}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  Quantity: 
+                  Quantity:
                   <TextField
                     type="number"
                     value={quantity}
                     onChange={handleQuantityChange}
-                    inputProps={{ min: 1, max: item.quantity}}
+                    inputProps={{ min: 1, max: item.quantity }}
                     style={{ width: '70px', marginLeft: '10px' }}
                   />
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                   Total Price: Rs. {getTotalPrice()}
                 </Typography>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Button variant="contained" color="primary" onClick={handleBuyNow}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleBuyNow}
+                  >
                     Buy Now
                   </Button>
-                  <Typography variant="body2">
-                    Money-back guarantee
-                  </Typography>
+                  <Typography variant="body2">Money-back guarantee</Typography>
                 </Box>
-                <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mt={2}
+                >
                   <Typography variant="body2">
                     Accepted Payment Methods:
                   </Typography>
-                  <Typography variant="body2">
-                    Visa, Mastercard
-                  </Typography>
+                  <Typography variant="body2">Visa, Mastercard</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -185,27 +239,43 @@ const ItemView = () => {
         )}
       </Container>
 
-      <Dialog open={openConfirmationDialog} onClose={() => setOpenConfirmationDialog(false)}>
+      <Dialog
+        open={openConfirmationDialog}
+        onClose={() => setOpenConfirmationDialog(false)}
+      >
         <DialogTitle>Are you sure you want to place this order?</DialogTitle>
         <DialogActions>
           <Button onClick={handleConfirmOrder} color="primary">
             Yes
           </Button>
-          <Button onClick={() => setOpenConfirmationDialog(false)} color="secondary">
+          <Button
+            onClick={() => setOpenConfirmationDialog(false)}
+            color="secondary"
+          >
             No
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog open={openPaymentDialog} onClose={() => setOpenPaymentDialog(false)}>
+      <Dialog
+        open={openPaymentDialog}
+        onClose={() => setOpenPaymentDialog(false)}
+      >
         <DialogTitle>Select Payment Method</DialogTitle>
         <DialogContent>
-          <Button onClick={() => handlePaymentMethodSelect('Visa')}>Visa</Button>
-          <Button onClick={() => handlePaymentMethodSelect('Mastercard')}>Mastercard</Button>
+          <Button onClick={() => handlePaymentMethodSelect('Visa')}>
+            Visa
+          </Button>
+          <Button onClick={() => handlePaymentMethodSelect('Mastercard')}>
+            Mastercard
+          </Button>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={openPaymentInfoDialog} onClose={() => setOpenPaymentInfoDialog(false)}>
+      <Dialog
+        open={openPaymentInfoDialog}
+        onClose={() => setOpenPaymentInfoDialog(false)}
+      >
         <DialogTitle>Enter Payment Information</DialogTitle>
         <DialogContent>
           <TextField
@@ -240,7 +310,11 @@ const ItemView = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handlePaymentInfoSubmit} color="primary" disabled={isPayNowDisabled}>
+          <Button
+            onClick={handlePaymentInfoSubmit}
+            color="primary"
+            disabled={isPayNowDisabled}
+          >
             Pay Now
           </Button>
         </DialogActions>

@@ -34,15 +34,17 @@ const EditProfile = () => {
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
 
   useEffect(() => {
-    
-  const fetchDealerData = async () => {
+    const fetchDealerData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8070/dealer/dealers', {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.get(
+          'http://localhost:8070/dealer/dealers',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
+        );
         const data = response.data;
         setDealerData(data);
         setUsername(data.username || '');
@@ -62,26 +64,22 @@ const EditProfile = () => {
     fetchDealerData();
   }, []);
 
-
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-
   const handleUpdateProfile = async () => {
     try {
-
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email && !emailRegex.test(email)) {
-      console.error('Invalid email format');
-      setErrorMessage('Invalid email format');
-      return;
-    }
+      if (email && !emailRegex.test(email)) {
+        console.error('Invalid email format');
+        setErrorMessage('Invalid email format');
+        return;
+      }
 
       console.log('Password:', password);
       console.log('Re-entered Password:', reEnteredPassword);
@@ -94,16 +92,15 @@ const EditProfile = () => {
         storeLocation,
         address,
         password,
-        reEnteredPassword, 
+        reEnteredPassword,
       });
-      
+
       if (password !== reEnteredPassword) {
-        console.error("Passwords do not match");
-        
+        console.error('Passwords do not match');
+
         return;
       }
-  
-      
+
       const updatedDetails = {
         id: dealerData._id,
         username,
@@ -113,16 +110,19 @@ const EditProfile = () => {
         storeLocation,
         address,
         password,
-        reEnteredPassword, 
+        reEnteredPassword,
       };
-  
-      
+
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8070/dealer/updateDealer/${dealerData._id}`, updatedDetails, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-      });
+      await axios.put(
+        `http://localhost:8070/dealer/updateDealer/${dealerData._id}`,
+        updatedDetails,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log('Update successful');
       setSuccessMessage('Details updated successfully');
       setTimeout(() => {
@@ -134,17 +134,19 @@ const EditProfile = () => {
     }
   };
 
-
   const confirmDeleteProfile = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8070/dealer/delete/${dealerData._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-      });
+      await axios.delete(
+        `http://localhost:8070/dealer/delete/${dealerData._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log('Profile deleted successfully');
-      
+
       localStorage.removeItem('token');
       localStorage.removeItem('isLoggedIn');
       setSuccessMessage('Profile deleted successfully');
@@ -157,33 +159,38 @@ const EditProfile = () => {
     }
   };
 
-  
   const handleClosePopup = () => {
-    
     setErrorMessage('');
     setSuccessMessage('');
   };
 
   return (
     <div className="container">
-
-      <div className="header"> 
-        <IconButton onClick={toggleSidebar} edge="start" className="sidebar-button"> 
+      <div className="header">
+        <IconButton
+          onClick={toggleSidebar}
+          edge="start"
+          className="sidebar-button"
+        >
           <MenuIcon />
         </IconButton>
       </div>
 
       <div className="profile-container">
-
-        <Typography variant="h4" style={{ textAlign: 'center', color:'white' }}>Here you can edit your details, {dealerData?.name || 'User'}!</Typography>
+        <Typography
+          variant="h4"
+          style={{ textAlign: 'center', color: 'white' }}
+        >
+          Here you can edit your details, {dealerData?.name || 'User'}!
+        </Typography>
 
         <div style={{ marginTop: '20px', display: 'inline-block' }}></div>
 
-
         <div className="details-container" style={{ marginTop: '40px' }}>
-
           <div className="detail-item">
-            <Typography variant="subtitle1" className="detail-title">Username:</Typography>
+            <Typography variant="subtitle1" className="detail-title">
+              Username:
+            </Typography>
             <input
               type="text"
               className="detail-content"
@@ -193,7 +200,9 @@ const EditProfile = () => {
           </div>
 
           <div className="detail-item">
-            <Typography variant="subtitle1" className="detail-title">Name:</Typography>
+            <Typography variant="subtitle1" className="detail-title">
+              Name:
+            </Typography>
             <input
               type="text"
               className="detail-content"
@@ -203,7 +212,9 @@ const EditProfile = () => {
           </div>
 
           <div className="detail-item">
-            <Typography variant="subtitle1" className="detail-title">Email:</Typography>
+            <Typography variant="subtitle1" className="detail-title">
+              Email:
+            </Typography>
             <input
               type="text"
               className="detail-content"
@@ -213,7 +224,9 @@ const EditProfile = () => {
           </div>
 
           <div className="detail-item">
-            <Typography variant="subtitle1" className="detail-title">Contact:</Typography>
+            <Typography variant="subtitle1" className="detail-title">
+              Contact:
+            </Typography>
             <input
               type="text"
               className="detail-content"
@@ -223,7 +236,9 @@ const EditProfile = () => {
           </div>
 
           <div className="detail-item">
-            <Typography variant="subtitle1" className="detail-title">Store Location:</Typography>
+            <Typography variant="subtitle1" className="detail-title">
+              Store Location:
+            </Typography>
             <input
               type="text"
               className="detail-content"
@@ -233,7 +248,9 @@ const EditProfile = () => {
           </div>
 
           <div className="detail-item">
-            <Typography variant="subtitle1" className="detail-title">Address:</Typography>
+            <Typography variant="subtitle1" className="detail-title">
+              Address:
+            </Typography>
             <input
               type="text"
               className="detail-content"
@@ -243,7 +260,9 @@ const EditProfile = () => {
           </div>
 
           <div className="detail-item">
-            <Typography variant="subtitle1" className="detail-title">Password:</Typography>
+            <Typography variant="subtitle1" className="detail-title">
+              Password:
+            </Typography>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -251,22 +270,32 @@ const EditProfile = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={dealerData.reEnteredPassword || 'Password'}
               />
-              <IconButton onClick={togglePasswordVisibility} style={{ color: 'white' }}>
+              <IconButton
+                onClick={togglePasswordVisibility}
+                style={{ color: 'white' }}
+              >
                 {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
               </IconButton>
             </div>
           </div>
 
           <div className="detail-item">
-            <Typography variant="subtitle1" className="detail-title">Re-enter Password:</Typography>
+            <Typography variant="subtitle1" className="detail-title">
+              Re-enter Password:
+            </Typography>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
                 className="detail-content"
                 onChange={(e) => setReEnteredPassword(e.target.value)}
-                placeholder={dealerData.reEnteredPassword || 'Re-enter Password'}
+                placeholder={
+                  dealerData.reEnteredPassword || 'Re-enter Password'
+                }
               />
-              <IconButton onClick={togglePasswordVisibility} style={{ color: 'white' }}>
+              <IconButton
+                onClick={togglePasswordVisibility}
+                style={{ color: 'white' }}
+              >
                 {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
               </IconButton>
             </div>
@@ -274,27 +303,71 @@ const EditProfile = () => {
         </div>
 
         <div className="button-container">
-          <Button variant="contained" color="success" startIcon={<UpdateIcon />} style={{ marginRight: '10px', borderRadius: '20px', fontSize: '16px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.4)' }} className="edit-button" onClick={handleUpdateProfile}>
+          <Button
+            variant="contained"
+            color="success"
+            startIcon={<UpdateIcon />}
+            style={{
+              marginRight: '10px',
+              borderRadius: '20px',
+              fontSize: '16px',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.4)',
+            }}
+            className="edit-button"
+            onClick={handleUpdateProfile}
+          >
             Edit Profile
           </Button>
-          <Button variant="contained" color="error" startIcon={<DeleteIcon />} style={{ marginLeft: '10px', borderRadius: '20px', fontSize: '16px', boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.4)' }} className="delete-button" onClick={() => setShowConfirmationDialog(true)}>
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<DeleteIcon />}
+            style={{
+              marginLeft: '10px',
+              borderRadius: '20px',
+              fontSize: '16px',
+              boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.4)',
+            }}
+            className="delete-button"
+            onClick={() => setShowConfirmationDialog(true)}
+          >
             Delete Profile
           </Button>
         </div>
       </div>
 
-      <Sidebar open={sidebarOpen} onClose={toggleSidebar} dealerName={dealerData?.name || ''} />
-      {successMessage && <PopupMessage message={successMessage} type="success" onClose={handleClosePopup} />}
-      {errorMessage && <PopupMessage message={errorMessage} type="error" onClose={handleClosePopup} />}
+      <Sidebar
+        open={sidebarOpen}
+        onClose={toggleSidebar}
+        dealerName={dealerData?.name || ''}
+      />
+      {successMessage && (
+        <PopupMessage
+          message={successMessage}
+          type="success"
+          onClose={handleClosePopup}
+        />
+      )}
+      {errorMessage && (
+        <PopupMessage
+          message={errorMessage}
+          type="error"
+          onClose={handleClosePopup}
+        />
+      )}
 
-      <Dialog open={showConfirmationDialog} onClose={() => setShowConfirmationDialog(false)}>
+      <Dialog
+        open={showConfirmationDialog}
+        onClose={() => setShowConfirmationDialog(false)}
+      >
         <DialogTitle>Are you sure you want to delete your profile?</DialogTitle>
         <DialogActions>
-          <Button onClick={confirmDeleteProfile} color="error">Yes</Button>
+          <Button onClick={confirmDeleteProfile} color="error">
+            Yes
+          </Button>
           <Button onClick={() => setShowConfirmationDialog(false)}>No</Button>
         </DialogActions>
       </Dialog>
-
     </div>
   );
 };

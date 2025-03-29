@@ -6,7 +6,7 @@ const Slideshow = ({ images }) => {
   const slideStyles = {
     height: '500px', // Set the height of each slide
     display: 'flex',
-    
+
     justifyContent: 'center',
     alignItems: 'center',
   };
@@ -16,14 +16,20 @@ const Slideshow = ({ images }) => {
       <Slide>
         {images.map((url, index) => (
           <div key={index} className="each-slide" style={slideStyles}>
-            <div style={{ 'backgroundImage': `url(${url})`, height: '100%', width: '100%', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-             
-            </div>
+            <div
+              style={{
+                backgroundImage: `url(${url})`,
+                height: '100%',
+                width: '100%',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            ></div>
           </div>
         ))}
       </Slide>
     </div>
   );
-}
+};
 
 export default Slideshow;

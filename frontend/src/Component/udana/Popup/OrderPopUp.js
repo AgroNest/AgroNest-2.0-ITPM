@@ -12,7 +12,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { MdConfirmationNumber, MdShoppingBasket, MdCode, MdAttachMoney, MdRemoveShoppingCart } from 'react-icons/md';
+import {
+  MdConfirmationNumber,
+  MdShoppingBasket,
+  MdCode,
+  MdAttachMoney,
+  MdRemoveShoppingCart,
+} from 'react-icons/md';
 import axios from 'axios';
 import DeleteOrderButton from '../OrderDelete';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
@@ -39,7 +45,9 @@ const CookiesBanner = ({ onClose, orderId }) => {
     const fetchOrderDetails = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8070/order/get/${orderId}`);
+        const response = await axios.get(
+          `http://localhost:8070/order/get/${orderId}`
+        );
         setOrder(response.data);
         setOrder(response.data);
         setLoading(false);
@@ -71,7 +79,12 @@ const CookiesBanner = ({ onClose, orderId }) => {
       <CssBaseline />
       <AppBar position="fixed" component="nav">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="menu">
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+          >
             <MenuIcon />
           </IconButton>
         </Toolbar>
@@ -95,11 +108,26 @@ const CookiesBanner = ({ onClose, orderId }) => {
             ) : (
               order && (
                 <View style={styles.page}>
-                  <Text style={styles.text}><MdConfirmationNumber />Order ID: {order.item._id}</Text><br />
-                  <Text style={styles.text}><MdShoppingBasket /> Item: {order.item.name}</Text><br />
-                  <Text style={styles.text}><MdCode /> Item Code: {order.item.itemcode}</Text><br />
-                  <Text style={styles.text}><MdRemoveShoppingCart /> Quantity: {order.item.quantity}</Text><br />
-                  <Text style={styles.text}><MdAttachMoney /> Total Price: Rs. {order.item.price}</Text>
+                  <Text style={styles.text}>
+                    <MdConfirmationNumber />
+                    Order ID: {order.item._id}
+                  </Text>
+                  <br />
+                  <Text style={styles.text}>
+                    <MdShoppingBasket /> Item: {order.item.name}
+                  </Text>
+                  <br />
+                  <Text style={styles.text}>
+                    <MdCode /> Item Code: {order.item.itemcode}
+                  </Text>
+                  <br />
+                  <Text style={styles.text}>
+                    <MdRemoveShoppingCart /> Quantity: {order.item.quantity}
+                  </Text>
+                  <br />
+                  <Text style={styles.text}>
+                    <MdAttachMoney /> Total Price: Rs. {order.item.price}
+                  </Text>
                 </View>
               )
             )}
@@ -108,11 +136,12 @@ const CookiesBanner = ({ onClose, orderId }) => {
             <Button onClick={handleUpdateOrder} variant="contained" autoFocus>
               Update
             </Button>
+            {order && order.item && order.item._id && <Invoice order={order} />}
             {order && order.item && order.item._id && (
-              <Invoice order={order} />
-            )}
-            {order && order.item && order.item._id && (
-              <DeleteOrderButton orderId={order.item._id} onClose={closeBanner} />
+              <DeleteOrderButton
+                orderId={order.item._id}
+                onClose={closeBanner}
+              />
             )}
             <Button onClick={closeBanner} color="secondary">
               Close
@@ -122,6 +151,6 @@ const CookiesBanner = ({ onClose, orderId }) => {
       </TrapFocus>
     </React.Fragment>
   );
-}
+};
 
 export default CookiesBanner;

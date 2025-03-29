@@ -3,7 +3,11 @@ import Button from '@mui/material/Button';
 
 const GmailButton = () => {
   const openGmail = () => {
-    window.open('https://mail.google.com/mail/u/3/#inbox', '_blank', 'noopener,noreferrer');
+    window.open(
+      'https://mail.google.com/mail/u/3/#inbox',
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
 
   return (

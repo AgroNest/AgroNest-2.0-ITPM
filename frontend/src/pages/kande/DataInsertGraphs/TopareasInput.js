@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Chart from "chart.js/auto";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Chart from 'chart.js/auto';
 
 const TopAreasInputData = () => {
   const [fertilizers, setFertilizers] = useState([]);
@@ -10,12 +10,14 @@ const TopAreasInputData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8070/dealer/alldealers");
+        const response = await axios.get(
+          'http://localhost:8070/dealer/alldealers'
+        );
         setFertilizers(response.data);
         setLoading(false);
         renderChart(response.data);
       } catch (error) {
-        console.error("Error fetching top areas:", error);
+        console.error('Error fetching top areas:', error);
       }
     };
 
@@ -29,18 +31,21 @@ const TopAreasInputData = () => {
 
     const storePersonCountMap = new Map();
     // Aggregate persons count by store location
-    fertilizersData.forEach(fertilizer => {
-        const location = fertilizer.storeLocation;
-        if (location) {
-            if (!storePersonCountMap.has(location)) {
-                storePersonCountMap.set(location, 0);
-            }
-            storePersonCountMap.set(location, storePersonCountMap.get(location) + 1);
+    fertilizersData.forEach((fertilizer) => {
+      const location = fertilizer.storeLocation;
+      if (location) {
+        if (!storePersonCountMap.has(location)) {
+          storePersonCountMap.set(location, 0);
         }
+        storePersonCountMap.set(
+          location,
+          storePersonCountMap.get(location) + 1
+        );
+      }
     });
 
     const labels = Array.from(storePersonCountMap.keys());
-    const data = labels.map(location => storePersonCountMap.get(location));
+    const data = labels.map((location) => storePersonCountMap.get(location));
 
     if (chartInstance) {
       chartInstance.destroy();
@@ -63,7 +68,7 @@ const TopAreasInputData = () => {
             pointBorderWidth: 2,
             pointRadius: 5,
             pointHoverRadius: 7,
-            tension: 0.4
+            tension: 0.4,
           },
         ],
       },
@@ -84,51 +89,53 @@ const TopAreasInputData = () => {
             title: {
               display: true,
               text: 'Store Location',
-              color: "#333",
+              color: '#333',
               font: {
                 weight: 1000,
-              }
+              },
             },
             grid: {
-              color: "rgba(0, 0, 0, 0.1)"
+              color: 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              color: "#333"
-            }
+              color: '#333',
+            },
           },
           y: {
             display: true,
             title: {
               display: true,
               text: 'Number of Persons',
-              color: "#333",
+              color: '#333',
               font: {
                 weight: 1000,
-              }
+              },
             },
             grid: {
-              color: "rgba(0, 0, 0, 0.1)"
+              color: 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              color: "#333"
-            }
+              color: '#333',
+            },
           },
         },
         animation: {
           duration: 1000,
           easing: 'easeInOutQuart',
-        }
+        },
       },
     });
-  }
+  };
 
   return (
     <div>
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div style={{ width: "600px", height: "400px" }}>
-          <h1 style={{fontWeight:"700",marginLeft:"50px" }}>Dealer Registrations top Areas</h1>
+        <div style={{ width: '600px', height: '400px' }}>
+          <h1 style={{ fontWeight: '700', marginLeft: '50px' }}>
+            Dealer Registrations top Areas
+          </h1>
           <canvas id="TopFerDataInsertlinechart"></canvas>
         </div>
       )}

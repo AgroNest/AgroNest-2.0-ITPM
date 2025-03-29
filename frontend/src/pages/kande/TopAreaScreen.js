@@ -5,7 +5,14 @@ import '../../styles/udana/dealer_profile.css';
 
 const TopAreas = () => {
   return (
-    <div className="profile-page-container" style={{backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', minHeight: '100vh'}}>
+    <div
+      className="profile-page-container"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        minHeight: '100vh',
+      }}
+    >
       <header />
       <div className="profile-page-content">
         <AddTopAreas />

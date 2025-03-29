@@ -1,7 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Typography, InputBase, Tabs, Tab, Paper, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Button, FormControl, Select, MenuItem } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Tabs,
+  Tab,
+  Paper,
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+  FormControl,
+  Select,
+  MenuItem,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -21,17 +40,23 @@ function CompletedRequests() {
 
     const fetchCompletedRequests = async () => {
       try {
-        const labIdResponse = await axios.get(`http://localhost:8070/labAccount/getLabIdByUsername/${storedUserName}`);
+        const labIdResponse = await axios.get(
+          `http://localhost:8070/labAccount/getLabIdByUsername/${storedUserName}`
+        );
         const labId = labIdResponse.data.labId;
 
-        const response = await axios.get(`http://localhost:8070/testRequest/retrieveCompletedTestRequests/${labId}`);
+        const response = await axios.get(
+          `http://localhost:8070/testRequest/retrieveCompletedTestRequests/${labId}`
+        );
         setCompletedRequests(response.data.testRequests);
 
         const names = {};
-        await Promise.all(response.data.testRequests.map(async (request) => {
-          const name = await getFarmerName(request.farmerID);
-          names[request.farmerID] = name;
-        }));
+        await Promise.all(
+          response.data.testRequests.map(async (request) => {
+            const name = await getFarmerName(request.farmerID);
+            names[request.farmerID] = name;
+          })
+        );
         setFarmerNames(names);
       } catch (error) {
         console.error('Error fetching completed requests:', error);
@@ -52,24 +77,35 @@ function CompletedRequests() {
   const handleStatusChange = async (event, requestId) => {
     const newStatus = event.target.value;
     try {
-      await axios.put(`http://localhost:8070/testRequest/updateStatus/${requestId}`, { status: newStatus });
+      await axios.put(
+        `http://localhost:8070/testRequest/updateStatus/${requestId}`,
+        { status: newStatus }
+      );
 
       if (newStatus === 'rejected') {
-        await axios.put('http://localhost:8070/labAccount/incrementRejected', { userName: sessionStorage.getItem('userName') });
+        await axios.put('http://localhost:8070/labAccount/incrementRejected', {
+          userName: sessionStorage.getItem('userName'),
+        });
       }
 
-      setCompletedRequests(completedRequests.filter(request => request._id !== requestId));
+      setCompletedRequests(
+        completedRequests.filter((request) => request._id !== requestId)
+      );
     } catch (error) {
       console.error('Error updating status:', error);
     }
   };
 
   const handleFileUpload = (requestId) => {
-    setUploadedRequests((prevUploadedRequests) => new Set([...prevUploadedRequests, requestId]));
+    setUploadedRequests(
+      (prevUploadedRequests) => new Set([...prevUploadedRequests, requestId])
+    );
   };
   const getFarmerName = async (farmerId) => {
     try {
-      const response = await axios.get(`http://localhost:8070/farmer/getName/${farmerId}`);
+      const response = await axios.get(
+        `http://localhost:8070/farmer/getName/${farmerId}`
+      );
       return response.data.fullName;
     } catch (error) {
       console.error('Error fetching farmer name:', error);
@@ -83,65 +119,123 @@ function CompletedRequests() {
   };
 
   const filteredRequests = completedRequests
-    .filter(request =>
-      farmerNames[request.farmerID] && farmerNames[request.farmerID].toLowerCase().includes(searchQuery.toLowerCase())
+    .filter(
+      (request) =>
+        farmerNames[request.farmerID] &&
+        farmerNames[request.farmerID]
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase())
     )
     .sort((a, b) => {
-
       const dateComparison = new Date(a.date) - new Date(b.date);
 
       if (dateComparison === 0) {
-        return new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`);
+        return (
+          new Date(`1970-01-01T${a.startTime}`) -
+          new Date(`1970-01-01T${b.startTime}`)
+        );
       }
 
       return dateComparison;
     });
 
   return (
-    <div style={{ marginTop:'50px' , paddingTop: '70px' }}>
-      <AppBar position="fixed" style={{ marginTop: "107px", backgroundColor: '#0F5132' }}>
+    <div style={{ marginTop: '50px', paddingTop: '70px' }}>
+      <AppBar
+        position="fixed"
+        style={{ marginTop: '107px', backgroundColor: '#0F5132' }}
+      >
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 0, color: 'white' }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 0, color: 'white' }}
+          >
             Lab Dashboard
           </Typography>
-          <Tabs value={tabValue} onChange={handleTabChange} indicatorColor="transparent">
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            indicatorColor="transparent"
+          >
             <Tab label="" disabled={tabValue === 0} />
             <Tab label="" disabled={tabValue === 0} />
             <Tab label="" disabled={tabValue === 0} />
             <Tab label="" disabled={tabValue === 0} />
-            <Tab label="Pending" component={Link} to="/labDash" sx={{ color: 'white' }}/>
+            <Tab
+              label="Pending"
+              component={Link}
+              to="/labDash"
+              sx={{ color: 'white' }}
+            />
             <Tab label="" disabled={tabValue === 0} />
-            <Tab label="Accepted" component={Link} to="/accepted" sx={{ color: 'white' }} />
+            <Tab
+              label="Accepted"
+              component={Link}
+              to="/accepted"
+              sx={{ color: 'white' }}
+            />
             <Tab label="" disabled={tabValue === 0} />
-            <Tab label="Completed" disabled={tabValue === 0} sx={{ color: 'white' }}/>
+            <Tab
+              label="Completed"
+              disabled={tabValue === 0}
+              sx={{ color: 'white' }}
+            />
             <Tab label="" disabled={tabValue === 0} />
             <Tab label="" disabled={tabValue === 0} />
           </Tabs>
-          <Typography variant="body1" style={{ marginRight: '10px', color: 'white'}}>
+          <Typography
+            variant="body1"
+            style={{ marginRight: '10px', color: 'white' }}
+          >
             Hello {userName}
           </Typography>
-          <Link to="/labProfile" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link
+            to="/labProfile"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
             <IconButton>
               <AccountCircleIcon />
             </IconButton>
           </Link>
         </Toolbar>
       </AppBar>
-      <Toolbar /> 
+      <Toolbar />
       <div style={{ marginTop: '20px' }} />
-      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px', marginBottom: '30px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          paddingRight: '20px',
+          marginBottom: '30px',
+        }}
+      >
         <IconButton>
-        <SearchIcon sx={{ color: '#0F5132' }}  />
+          <SearchIcon sx={{ color: '#0F5132' }} />
         </IconButton>
         <InputBase
           placeholder="  Search..."
           value={searchQuery}
           onChange={handleSearchChange}
-          sx={{ backgroundColor: 'white', marginLeft: '10px', color: 'black', border: '2px solid #0F5132' }}
+          sx={{
+            backgroundColor: 'white',
+            marginLeft: '10px',
+            color: 'black',
+            border: '2px solid #0F5132',
+          }}
         />
       </div>
-      <div style={{ margin: '0 20px', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }}>
-        <TableContainer component={Paper} style={{ backgroundColor: '#E8F5E9' }}>
+      <div
+        style={{
+          margin: '0 20px',
+          borderRadius: '10px',
+          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        <TableContainer
+          component={Paper}
+          style={{ backgroundColor: '#E8F5E9' }}
+        >
           <Table>
             <TableHead>
               <TableRow style={{ backgroundColor: '#90EE90' }}>
@@ -166,7 +260,9 @@ function CompletedRequests() {
                     <FormControl sx={{ minWidth: 120 }}>
                       <Select
                         value={request.status}
-                        onChange={(event) => handleStatusChange(event, request._id)}
+                        onChange={(event) =>
+                          handleStatusChange(event, request._id)
+                        }
                         sx={{ fontSize: '0.8rem', minWidth: 100 }}
                       >
                         <MenuItem value="pending">Pending</MenuItem>
@@ -183,7 +279,13 @@ function CompletedRequests() {
                       </Button>
                     ) : (
                       <Link to={`/uploadFile?requestId=${request._id}`}>
-                        <Button variant="contained" style={{ backgroundColor: '#0F5132', color: '#FFFFFF' }}>
+                        <Button
+                          variant="contained"
+                          style={{
+                            backgroundColor: '#0F5132',
+                            color: '#FFFFFF',
+                          }}
+                        >
                           Upload
                         </Button>
                       </Link>

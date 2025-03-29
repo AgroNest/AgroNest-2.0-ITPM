@@ -1,8 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Card, CardContent, Rating, CardActions, Button, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Rating,
+  CardActions,
+  Button,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from 'recharts';
 import FeedbackDetailsDialog from '../../../Component/thamuditha/FeedbackComp/FeedbackDetailsDialog';
 
 const FeedbackCardView = () => {
@@ -25,7 +48,8 @@ const FeedbackCardView = () => {
   }, []);
 
   const countFeedbacksByRating = (rating) => {
-    return feedbacks.filter((feedback) => feedback.starRating === rating).length;
+    return feedbacks.filter((feedback) => feedback.starRating === rating)
+      .length;
   };
 
   const handleFilter = (rating) => {
@@ -40,7 +64,7 @@ const FeedbackCardView = () => {
 
   const data = [...Array(5).keys()].map((rating) => ({
     rating: rating + 1,
-    count: countFeedbacksByRating(rating + 1)
+    count: countFeedbacksByRating(rating + 1),
   }));
 
   const handleViewDetails = (feedback) => {
@@ -49,22 +73,69 @@ const FeedbackCardView = () => {
   };
 
   return (
-    <Container style={{ borderRadius:'10px', padding:'30px', marginTop: '130px', backgroundColor: '#FFFF', width: '90%', position: 'relative' }} maxWidth="xl">
-      <div style={{ position: 'absolute', top: '20px', right: '20px', width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#3C843F', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '24px', fontWeight: 'bold' }}>
+    <Container
+      style={{
+        borderRadius: '10px',
+        padding: '30px',
+        marginTop: '130px',
+        backgroundColor: '#FFFF',
+        width: '90%',
+        position: 'relative',
+      }}
+      maxWidth="xl"
+    >
+      <div
+        style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          width: '60px',
+          height: '60px',
+          borderRadius: '50%',
+          backgroundColor: '#3C843F',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '24px',
+          fontWeight: 'bold',
+        }}
+      >
         {feedbacks.length}
       </div>
       <Typography marginTop={3} variant="h4" align="center" gutterBottom>
-       Customer Feedbacks
+        Customer Feedbacks
       </Typography>
       {/* Feedback count */}
       <Typography variant="h6" align="center" gutterBottom>
         Total Feedbacks: {feedbacks.length}
       </Typography>
-      <Box display="flex" flexDirection="row" alignItems="flex-start" marginTop={5} marginBottom={5} marginRight={10}>
-      
-        <Box width="100%" height={150} display="flex" flexDirection="column" alignItems="flex-start" marginRight={10} marginLeft={1}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="flex-start"
+        marginTop={5}
+        marginBottom={5}
+        marginRight={10}
+      >
+        <Box
+          width="100%"
+          height={150}
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+          marginRight={10}
+          marginLeft={1}
+        >
           {[...Array(5).keys()].map((rating) => (
-            <Box key={rating} display="flex" alignItems="center" marginBottom={1} onClick={() => handleFilter(rating + 1)} style={{ cursor: 'pointer' }}>
+            <Box
+              key={rating}
+              display="flex"
+              alignItems="center"
+              marginBottom={1}
+              onClick={() => handleFilter(rating + 1)}
+              style={{ cursor: 'pointer' }}
+            >
               <Typography variant="subtitle1" style={{ marginRight: '25px' }}>
                 {countFeedbacksByRating(rating + 1)}
               </Typography>
@@ -74,7 +145,16 @@ const FeedbackCardView = () => {
               </Typography>
             </Box>
           ))}
-          <Button onClick={handleResetFilter} style={{ marginTop:'10px', backgroundColor: '#3C843F', color: 'white'}}>Reset</Button>
+          <Button
+            onClick={handleResetFilter}
+            style={{
+              marginTop: '10px',
+              backgroundColor: '#3C843F',
+              color: 'white',
+            }}
+          >
+            Reset
+          </Button>
         </Box>
         <Box width="50%">
           <Typography variant="h6" align="right" gutterBottom>
@@ -86,7 +166,14 @@ const FeedbackCardView = () => {
               <YAxis />
               <Tooltip />
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={['#FF5733', '#FFBD33', '#D9FF33', '#33FF69', '#33FFEC'][index % 5]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={
+                    ['#FF5733', '#FFBD33', '#D9FF33', '#33FF69', '#33FFEC'][
+                      index % 5
+                    ]
+                  }
+                />
               ))}
               <Bar dataKey="count" fill="#299B21" />
             </BarChart>
@@ -96,19 +183,43 @@ const FeedbackCardView = () => {
       {/* Feedback cards*/}
       <Grid marginTop={8} container spacing={2}>
         {feedbacks
-          .filter((feedback) => filterRating ? feedback.starRating === filterRating : true)
+          .filter((feedback) =>
+            filterRating ? feedback.starRating === filterRating : true
+          )
           .map((feedback) => (
             <Grid mb={5} item key={feedback._id} xs={12} sm={6} md={4} lg={3}>
-              <Card variant="outlined" style={{ height: '100%', backgroundColor: '#f0f0f0' }}>
+              <Card
+                variant="outlined"
+                style={{ height: '100%', backgroundColor: '#f0f0f0' }}
+              >
                 <CardContent>
-                  <Typography variant="h6">Item Code: {feedback.itemcode}</Typography>
-                  <Typography variant="body1">Order ID: {feedback.orderId}</Typography>
-                  <Typography variant="body1">Farmer Name: {feedback.farmerName}</Typography>
-                  <Typography variant="body1">Rating: <Rating name="read-only" value={feedback.starRating} readOnly /></Typography>
-                  <Typography variant="body2">{feedback.description}</Typography>
+                  <Typography variant="h6">
+                    Item Code: {feedback.itemcode}
+                  </Typography>
+                  <Typography variant="body1">
+                    Order ID: {feedback.orderId}
+                  </Typography>
+                  <Typography variant="body1">
+                    Farmer Name: {feedback.farmerName}
+                  </Typography>
+                  <Typography variant="body1">
+                    Rating:{' '}
+                    <Rating
+                      name="read-only"
+                      value={feedback.starRating}
+                      readOnly
+                    />
+                  </Typography>
+                  <Typography variant="body2">
+                    {feedback.description}
+                  </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" style={{ color: 'green' }} onClick={() => handleViewDetails(feedback)}>
+                  <Button
+                    size="small"
+                    style={{ color: 'green' }}
+                    onClick={() => handleViewDetails(feedback)}
+                  >
                     View Details
                   </Button>
                 </CardActions>

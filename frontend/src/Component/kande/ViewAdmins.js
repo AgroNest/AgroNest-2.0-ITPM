@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableHead, TableBody, TableRow, TableCell, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from '@mui/material';
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
@@ -13,7 +25,7 @@ const UserTable = () => {
     city: '',
     phone: '',
     email: '',
-    address: ''
+    address: '',
   });
 
   useEffect(() => {
@@ -41,7 +53,7 @@ const UserTable = () => {
       city: user.city,
       phone: user.phone,
       email: user.email,
-      address: user.address
+      address: user.address,
     });
     setUpdateDialogOpen(true);
   };
@@ -69,13 +81,16 @@ const UserTable = () => {
   const handleUpdateInputChange = (e) => {
     setUpdatedUser({
       ...updatedUser,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleUpdateSubmit = async () => {
     try {
-      await axios.put(`http://localhost:8070/api/admin/${selectedUser._id}`, updatedUser);
+      await axios.put(
+        `http://localhost:8070/api/admin/${selectedUser._id}`,
+        updatedUser
+      );
       // Refresh the user list after update
       const response = await axios.get('http://localhost:8070/api/admin');
       setUsers(response.data);
@@ -108,8 +123,20 @@ const UserTable = () => {
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.address}</TableCell>
               <TableCell>
-                <Button variant="contained" color="primary" onClick={() => handleDelete(user._id)}>Delete</Button>
-                <Button variant="contained" color="secondary" onClick={() => handleUpdate(user)}>Update</Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleDelete(user._id)}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleUpdate(user)}
+                >
+                  Update
+                </Button>
               </TableCell>
             </TableRow>
           ))}

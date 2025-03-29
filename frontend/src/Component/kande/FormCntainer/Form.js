@@ -11,7 +11,7 @@ const Form = () => {
     city: '',
     phone: '',
     email: '',
-    address: ''
+    address: '',
   });
 
   const handleChange = (e) => {
@@ -30,7 +30,7 @@ const Form = () => {
         city: '',
         phone: '',
         email: '',
-        address: ''
+        address: '',
       });
     } catch (error) {
       console.error('Error submitting data:', error);
@@ -38,13 +38,30 @@ const Form = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'70px',height: '100vh', backgroundColor: '#f0f0f0' }}>
-     <Link to="/viewadmin">
-      <Button type="button" variant="contained" color="primary" style={{marginRight:"100px",width:"300px"}}>
-        View Admin Panel
-      </Button>
-    </Link>
-      <form style={{ width: '500px', padding: '20px', backgroundColor: 'white' }} onSubmit={handleSubmit}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '70px',
+        height: '100vh',
+        backgroundColor: '#f0f0f0',
+      }}
+    >
+      <Link to="/viewadmin">
+        <Button
+          type="button"
+          variant="contained"
+          color="primary"
+          style={{ marginRight: '100px', width: '300px' }}
+        >
+          View Admin Panel
+        </Button>
+      </Link>
+      <form
+        style={{ width: '500px', padding: '20px', backgroundColor: 'white' }}
+        onSubmit={handleSubmit}
+      >
         <TextField
           type="text"
           label="Username"
@@ -105,7 +122,9 @@ const Form = () => {
           margin="normal"
           variant="outlined"
         />
-        <Button type="submit" variant="contained" color="primary">Submit</Button>
+        <Button type="submit" variant="contained" color="primary">
+          Submit
+        </Button>
       </form>
     </div>
   );

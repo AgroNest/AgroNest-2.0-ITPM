@@ -19,12 +19,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post('http://localhost:8070/Farmer/login', formData);
-        const { token } = response.data.username;
-        localStorage.setItem('logId', token);
-        console.log('Token:', token);
-    } catch (error) {    
-        console.error('Login error:', error);
+      const response = await axios.post(
+        'http://localhost:8070/Farmer/login',
+        formData
+      );
+      const { token } = response.data.username;
+      localStorage.setItem('logId', token);
+      console.log('Token:', token);
+    } catch (error) {
+      console.error('Login error:', error);
     }
   };
 
@@ -32,7 +35,9 @@ const Login = () => {
     <form onSubmit={handleSubmit}>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         <Grid item xs={12}>
-          <Typography variant="h5" align="center">Login</Typography>
+          <Typography variant="h5" align="center">
+            Login
+          </Typography>
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -56,7 +61,9 @@ const Login = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button variant="contained" color="primary" type="submit" fullWidth>Login</Button>
+          <Button variant="contained" color="primary" type="submit" fullWidth>
+            Login
+          </Button>
         </Grid>
       </Grid>
     </form>

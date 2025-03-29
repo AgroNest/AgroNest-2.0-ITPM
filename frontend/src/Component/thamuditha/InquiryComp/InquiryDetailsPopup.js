@@ -12,7 +12,15 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { PDFDownloadLink, PDFViewer, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import {
+  PDFDownloadLink,
+  PDFViewer,
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+} from '@react-pdf/renderer';
 
 const buttonStyle = {
   padding: '10px 20px',
@@ -71,7 +79,8 @@ const styles = StyleSheet.create({
 });
 
 const InquiryDetailsPopup = ({ inquiry, onClosePopup }) => {
-  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+    useState(false);
   const [isBackdropOpen, setIsBackdropOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
@@ -83,9 +92,9 @@ const InquiryDetailsPopup = ({ inquiry, onClosePopup }) => {
     try {
       await axios.delete(`http://localhost:8070/api/reports/${inquiry._id}`);
       setIsDeleteSuccess(true);
-      onClosePopup(); 
+      onClosePopup();
       setTimeout(() => {
-        window.location.reload(); 
+        window.location.reload();
       }, 1000);
     } catch (error) {
       console.error(error);
@@ -131,9 +140,7 @@ const InquiryDetailsPopup = ({ inquiry, onClosePopup }) => {
       </Page>
     </Document>
   );
-  
-  
-  
+
   return (
     <Dialog open onClose={onClosePopup} maxWidth="md" fullWidth>
       <DialogTitle>Inquiry Details</DialogTitle>
@@ -184,18 +191,21 @@ const InquiryDetailsPopup = ({ inquiry, onClosePopup }) => {
         )}
         <Button onClick={onClosePopup}>Close</Button>
         {inquiry.status === 'Resolved' && (
-          <PDFDownloadLink document={<MyDocument />} fileName="inquiry_details.pdf">
-          {({ blob, url, loading, error }) => (
-            <a
-              style={buttonStyle}
-              href={url}
-              download="inquiry_details.pdf"
-              onClick={loading ? (e) => e.preventDefault() : null}
-            >
-              {loading ? 'Loading document...' : 'Download'}
-            </a>
-          )}
-        </PDFDownloadLink>
+          <PDFDownloadLink
+            document={<MyDocument />}
+            fileName="inquiry_details.pdf"
+          >
+            {({ blob, url, loading, error }) => (
+              <a
+                style={buttonStyle}
+                href={url}
+                download="inquiry_details.pdf"
+                onClick={loading ? (e) => e.preventDefault() : null}
+              >
+                {loading ? 'Loading document...' : 'Download'}
+              </a>
+            )}
+          </PDFDownloadLink>
         )}
       </DialogActions>
 
@@ -223,10 +233,20 @@ const InquiryDetailsPopup = ({ inquiry, onClosePopup }) => {
       </Dialog>
 
       {isBackdropOpen && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 9999 }}>
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 9999,
+          }}
+        >
           <LinearProgress />
           {isDeleting && <div style={{ textAlign: 'center' }}>Deleting...</div>}
-          {isDeleteSuccess && <div style={{ textAlign: 'center' }}>Delete successful!</div>}
+          {isDeleteSuccess && (
+            <div style={{ textAlign: 'center' }}>Delete successful!</div>
+          )}
         </div>
       )}
     </Dialog>

@@ -17,7 +17,8 @@ const DeleteOrderButton = ({ orderId }) => {
   };
 
   const handleConfirmDelete = () => {
-    axios.delete(`http://localhost:8070/order/delete/${orderId}`)
+    axios
+      .delete(`http://localhost:8070/order/delete/${orderId}`)
       .then((response) => {
         console.log('Order deleted successfully:', response);
         setOpen(false);

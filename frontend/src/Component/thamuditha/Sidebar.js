@@ -14,7 +14,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 
-
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -48,34 +47,29 @@ const Sidebar = ({ farmerID }) => {
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </ListItem>
-       
-        <ListItem button component={Link} to="/viewdealers"> 
+
+        <ListItem button component={Link} to="/viewdealers">
           <ListItemText primary="Dealers" />
         </ListItem>
 
-        <ListItem button component={Link} to="/viewfarmers"> 
-        <ListItemText primary="Farmers" />
+        <ListItem button component={Link} to="/viewfarmers">
+          <ListItemText primary="Farmers" />
         </ListItem>
-
 
         <ListItem button component={Link} to="/labrotaryview">
           <ListItemText primary="Laboratory" />
         </ListItem>
 
-        <ListItem button component={Link} to="/userreports">  
-        <ListItemText primary="Inquiries" />
+        <ListItem button component={Link} to="/userreports">
+          <ListItemText primary="Inquiries" />
         </ListItem>
 
-        <ListItem button component={Link} to="/addarticle"> 
+        <ListItem button component={Link} to="/addarticle">
           <ListItemText primary="Articles " />
-          
         </ListItem>
 
         <ListItem button components={Link} to="/">
-         
           <ListItemText primary="Promotion" />
-          
-          
         </ListItem>
       </List>
     </Drawer>

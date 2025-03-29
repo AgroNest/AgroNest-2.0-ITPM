@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { 
-  Card, 
-  CardContent, 
-  Typography, 
-  Grid, 
-  Container, 
-  Button, 
-  makeStyles, 
-  Fade, 
-  FormControl, 
-  InputLabel, 
-  Select, 
-  MenuItem 
-} from '@material-ui/core';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Container,
+  Button,
+  makeStyles,
+  Fade,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
 import SearchBar from './SearchBar';
 import { PDFDownloadLink, Document, Page, Text } from '@react-pdf/renderer';
 
@@ -71,14 +71,15 @@ const ArticleList = () => {
   const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:8070/api/articles')
-      .then(res => {
+    axios
+      .get('http://localhost:8070/api/articles')
+      .then((res) => {
         setArticles(res.data);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
-  const filteredArticles = articles.filter(article =>
+  const filteredArticles = articles.filter((article) =>
     article.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -111,25 +112,31 @@ const ArticleList = () => {
   };
 
   return (
-    <div style={{ padding: '50px', width:'auto', backgroundColor: '#F5F5F5', minHeight: '300vh' }}>
-      <Container >
+    <div
+      style={{
+        padding: '50px',
+        width: 'auto',
+        backgroundColor: '#F5F5F5',
+        minHeight: '300vh',
+      }}
+    >
+      <Container>
         <div style={{ padding: '20px', backgroundColor: '#F5F5F5' }}>
-        <Typography 
-          variant="h1" 
-          style={{
-            marginBottom: '20px', 
-            color: '#196F3D',
-            textAlign: 'center', 
-            fontFamily: 'serif', 
-            letterSpacing: '5px'
-            
-          }}
-        >
-          Articles
-        </Typography>
+          <Typography
+            variant="h1"
+            style={{
+              marginBottom: '20px',
+              color: '#196F3D',
+              textAlign: 'center',
+              fontFamily: 'serif',
+              letterSpacing: '5px',
+            }}
+          >
+            Articles
+          </Typography>
 
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          
+
           {/* Sorting Section */}
           <FormControl variant="outlined" style={{ marginBottom: '20px' }}>
             <InputLabel id="sort-by-label">Sort By</InputLabel>
@@ -147,7 +154,11 @@ const ArticleList = () => {
 
           {/* Image or Video */}
           <div className={classes.imageContainer}>
-            <img src="https://res.cloudinary.com/ds3n13gyv/image/upload/v1713824971/AgroNest/ghhdgotwunlm9l6t60fc.jpg" alt="Cloudinary Image" className={classes.image} />
+            <img
+              src="https://res.cloudinary.com/ds3n13gyv/image/upload/v1713824971/AgroNest/ghhdgotwunlm9l6t60fc.jpg"
+              alt="Cloudinary Image"
+              className={classes.image}
+            />
             <Fade in={true} timeout={500}>
               <div className={classes.imageOverlay}>
                 {showVideo ? (
@@ -158,13 +169,22 @@ const ArticleList = () => {
                     loop
                     onClick={handleVideoClose}
                   >
-                    <source src="https://res.cloudinary.com/ds3n13gyv/video/upload/v1713826245/AgroNest/lebuodtnrh6mcbhtimt3.mp4" type="video/mp4" />
+                    <source
+                      src="https://res.cloudinary.com/ds3n13gyv/video/upload/v1713826245/AgroNest/lebuodtnrh6mcbhtimt3.mp4"
+                      type="video/mp4"
+                    />
                     Your browser does not support the video tag.
                   </video>
                 ) : (
                   <div className={classes.overlayContent}>
                     <Typography variant="h5">A short reference</Typography>
-                    <Button variant="contained" color="primary" onClick={handleWatchNow}>Watch now</Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleWatchNow}
+                    >
+                      Watch now
+                    </Button>
                   </div>
                 )}
               </div>
@@ -174,7 +194,11 @@ const ArticleList = () => {
           {sortedArticles.map((article, index) => (
             <Card key={article._id} style={{ marginBottom: '20px' }}>
               <CardContent>
-                <Typography variant="h6" gutterBottom style={{ color: '#4CAF50' }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  style={{ color: '#4CAF50' }}
+                >
                   {article.title}
                 </Typography>
                 <Typography color="textSecondary">
@@ -184,7 +208,12 @@ const ArticleList = () => {
                   {article.content}
                 </Typography>
                 <PDFDownloadLink
-                  document={<ArticlePDF title={article.title} content={article.content} />}
+                  document={
+                    <ArticlePDF
+                      title={article.title}
+                      content={article.content}
+                    />
+                  }
                   fileName={`${article.title}.pdf`}
                 >
                   {({ loading }) => (

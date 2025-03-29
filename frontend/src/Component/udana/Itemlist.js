@@ -88,7 +88,8 @@ const ItemList = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8070/item/displayAll')
+    axios
+      .get('http://localhost:8070/item/displayAll')
       .then((res) => {
         setItems(res.data);
         setLoading(false);
@@ -112,13 +113,20 @@ const ItemList = () => {
       <SearchBar
         placeholder="Search items"
         variant="outlined"
-        color='success'
+        color="success"
         onChange={handleSearchChange}
         InputProps={{
           startAdornment: <SearchIcon />,
         }}
       />
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: '30px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          marginTop: '30px',
+        }}
+      >
         {loading ? (
           <Typography>Loading...</Typography>
         ) : error ? (
@@ -130,9 +138,13 @@ const ItemList = () => {
               focusRipple
               component={Link}
               to={`/item/${item._id}`}
-              sx={{ margin: '20px' }} 
+              sx={{ margin: '20px' }}
             >
-              <ImageSrc style={{ backgroundImage: `url('https://t3.ftcdn.net/jpg/05/18/01/82/360_F_518018267_kVSFbWv58Or4c4ihnoXNzNVPpltTqdqY.jpg')` }} />
+              <ImageSrc
+                style={{
+                  backgroundImage: `url('https://t3.ftcdn.net/jpg/05/18/01/82/360_F_518018267_kVSFbWv58Or4c4ihnoXNzNVPpltTqdqY.jpg')`,
+                }}
+              />
               <ImageBackdrop className="MuiImageBackdrop-root" />
               <Image>
                 <Typography

@@ -27,7 +27,7 @@ const Invoice = ({ order }) => {
       ['Order ID: ', order.item._id.toString()],
       ['Item Code: ', order.item.itemcode.toString()],
       ['Fertilizer Name: ', order.item.name.toString()],
-      ['Quantity: ', order.item.quantity.toString()]
+      ['Quantity: ', order.item.quantity.toString()],
     ];
 
     const tableWidth = 200;
@@ -53,7 +53,9 @@ const Invoice = ({ order }) => {
     // Add total price
     const totalPrice = order.item.price; // Get total price
     const totalPriceText = `Total Price: ${totalPrice}`;
-    const totalPriceWidth = doc.getStringUnitWidth(totalPriceText) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+    const totalPriceWidth =
+      (doc.getStringUnitWidth(totalPriceText) * doc.internal.getFontSize()) /
+      doc.internal.scaleFactor;
     const totalPriceXPos = startX + tableWidth - totalPriceWidth - 5; // Position to align with right of table
     const totalPriceYPos = startY + table.length * lineHeight + 10; // Position below the table
     doc.text(totalPriceText, totalPriceXPos, totalPriceYPos);
@@ -61,7 +63,9 @@ const Invoice = ({ order }) => {
     // Add creation time
     const creationTime = new Date().toLocaleString();
     const creationTimeText = `Created: ${creationTime}`;
-    const textWidthBottom = doc.getStringUnitWidth(creationTimeText) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+    const textWidthBottom =
+      (doc.getStringUnitWidth(creationTimeText) * doc.internal.getFontSize()) /
+      doc.internal.scaleFactor;
     const pageWidth = doc.internal.pageSize.getWidth();
     const xPositionBottom = pageWidth - textWidthBottom - 10; // Adjust 10 for margin
     const yPositionBottom = doc.internal.pageSize.getHeight() - 10; // Adjust 10 for margin
@@ -72,7 +76,12 @@ const Invoice = ({ order }) => {
   };
 
   return (
-    <Button variant="contained" size="small" onClick={handleExportPDF} sx={{ backgroundColor: 'green', color: 'white' }}>
+    <Button
+      variant="contained"
+      size="small"
+      onClick={handleExportPDF}
+      sx={{ backgroundColor: 'green', color: 'white' }}
+    >
       Download Invoice
     </Button>
   );

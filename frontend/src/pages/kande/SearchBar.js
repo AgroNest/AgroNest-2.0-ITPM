@@ -1,6 +1,6 @@
 // SearchBar.js
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
 
 const SearchBar = ({ searchTerm, setSearchTerm }) => {
   const handleSearch = (e) => {
@@ -20,4 +20,3 @@ const SearchBar = ({ searchTerm, setSearchTerm }) => {
 };
 
 export default SearchBar;
-

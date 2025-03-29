@@ -1,8 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { AccountCircle, FormatBold, FormatItalic, FormatUnderlined, FormatAlignLeft } from '@mui/icons-material';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Avatar, Box, Snackbar, IconButton,Typography } from '@mui/material';
+import {
+  AccountCircle,
+  FormatBold,
+  FormatItalic,
+  FormatUnderlined,
+  FormatAlignLeft,
+} from '@mui/icons-material';
+import {
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Avatar,
+  Box,
+  Snackbar,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -28,20 +46,25 @@ const FormPage = () => {
   const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('');
-  const [categoryValue, setCategoryValue] = useState(location.search.split('=')[1]);
+  const [categoryValue, setCategoryValue] = useState(
+    location.search.split('=')[1]
+  );
   const [category, setCategory] = useState(location.search.split('=')[1]);
   const [area, setArea] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const inquiryId = new URLSearchParams(location.search).get('id');
-  const emailRegex = /\S+@\S+\.\S+/; 
+  const emailRegex = /\S+@\S+\.\S+/;
 
   useEffect(() => {
     const fetchInquiryDetails = async () => {
       try {
         if (inquiryId) {
-          const response = await axios.get(`http://localhost:8070/api/reports/${inquiryId}`);
-          const { name, topic, description, priority, area ,category } = response.data;
+          const response = await axios.get(
+            `http://localhost:8070/api/reports/${inquiryId}`
+          );
+          const { name, topic, description, priority, area, category } =
+            response.data;
           console.log('Fetched inquiry details:', response.data);
           setName(name);
           setTopic(topic);
@@ -63,7 +86,9 @@ const FormPage = () => {
     e.preventDefault();
     try {
       if (!emailRegex.test(name)) {
-        alert('Please enter a valid email address with the format example@gmail.com');
+        alert(
+          'Please enter a valid email address with the format example@gmail.com'
+        );
         return;
       }
 
@@ -74,7 +99,7 @@ const FormPage = () => {
           description,
           priority,
           categoryValue,
-          area
+          area,
         });
         setSuccessMessage('Inquiry updated successfully!');
         setOpenSnackbar(true);
@@ -89,7 +114,7 @@ const FormPage = () => {
           description,
           priority,
           category,
-          area
+          area,
         });
         setSuccessMessage('Inquiry submitted successfully!');
         setOpenSnackbar(true);
@@ -108,14 +133,37 @@ const FormPage = () => {
   };
 
   return (
-    <div style={{ backgroundColor: 'white', padding: '20px', marginTop: '100px', overflowY: 'auto' }}>
+    <div
+      style={{
+        backgroundColor: 'white',
+        padding: '20px',
+        marginTop: '100px',
+        overflowY: 'auto',
+      }}
+    >
       <h1>{inquiryId ? 'Update Inquiry' : 'Submit Inquiry'}</h1>
-      <Stack sx={{ width: '100%', alignItems: 'center',marginBottom: '50px', marginTop:'50px' }} spacing={4}>
+      <Stack
+        sx={{
+          width: '100%',
+          alignItems: 'center',
+          marginBottom: '50px',
+          marginTop: '50px',
+        }}
+        spacing={4}
+      >
         <CustomizedSteppers />
       </Stack>
       <form onSubmit={handleSubmit}>
-        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '40px',marginTop:'20px' }}>
-          <TextField  color="success" 
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '40px',
+            marginTop: '20px',
+          }}
+        >
+          <TextField
+            color="success"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder=" E-mail (@gmail.com)"
@@ -124,18 +172,29 @@ const FormPage = () => {
               startAdornment: <AccountCircle />,
             }}
           />
-          <TextField  
+          <TextField
             value={categoryValue || ''}
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Category"
             disabled
             variant="outlined"
-            style={{ marginLeft: '50px', color: '#fffff', backgroundColor: '#86B579' }}
+            style={{
+              marginLeft: '50px',
+              color: '#fffff',
+              backgroundColor: '#86B579',
+            }}
           />
-          
-          <FormControl color="success" style={{ marginLeft: '70px', minWidth: '250px' }}>
+
+          <FormControl
+            color="success"
+            style={{ marginLeft: '70px', minWidth: '250px' }}
+          >
             <InputLabel>Select Your Area</InputLabel>
-            <Select value={area} onChange={(e) => setArea(e.target.value)} required>
+            <Select
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+              required
+            >
               <MenuItem value="">Select Area</MenuItem>
               <MenuItem value="Kandy">Kandy</MenuItem>
               <MenuItem value="Colombo">Colombo</MenuItem>
@@ -163,9 +222,10 @@ const FormPage = () => {
               <MenuItem value="Mullaitivu">Mullaitivu</MenuItem>
             </Select>
           </FormControl>
-          
         </Box>
-        <TextField label="Topic" color="success" 
+        <TextField
+          label="Topic"
+          color="success"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
           placeholder="write your heading here"
@@ -173,7 +233,9 @@ const FormPage = () => {
           fullWidth
           style={{ marginBottom: '30px' }}
         />
-        <TextField label="Description" color="success" 
+        <TextField
+          label="Description"
+          color="success"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="write your issue here..."
@@ -184,7 +246,14 @@ const FormPage = () => {
           maxRows={10}
           InputProps={{
             endAdornment: (
-              <Box sx={{ display: '-ms-flexbox', gap: '10px' ,height: '200px',width:'500px'}}>
+              <Box
+                sx={{
+                  display: '-ms-flexbox',
+                  gap: '10px',
+                  height: '200px',
+                  width: '500px',
+                }}
+              >
                 <IconButton>
                   <FormatBold />
                 </IconButton>
@@ -202,38 +271,77 @@ const FormPage = () => {
           }}
           style={{ marginBottom: '50px' }}
         />
-        <FormControl color="success" fullWidth style={{ marginBottom: '100px' }}>
+        <FormControl
+          color="success"
+          fullWidth
+          style={{ marginBottom: '100px' }}
+        >
           <InputLabel>Select Priority</InputLabel>
-          <Select value={priority} onChange={(e) => setPriority(e.target.value)} required>
+          <Select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            required
+          >
             <MenuItem value="">Select Priority</MenuItem>
             <MenuItem value="Low">
-              <Avatar  variant="rounded" sx={{ backgroundColor: 'green' }}>L</Avatar> FAQ and Self-Help
+              <Avatar variant="rounded" sx={{ backgroundColor: 'green' }}>
+                L
+              </Avatar>{' '}
+              FAQ and Self-Help
             </MenuItem>
             <MenuItem value="Medium">
-              <Avatar  variant="rounded"sx={{ backgroundColor: 'orange' }}>M</Avatar> General Inquiries
+              <Avatar variant="rounded" sx={{ backgroundColor: 'orange' }}>
+                M
+              </Avatar>{' '}
+              General Inquiries
             </MenuItem>
             <MenuItem value="High">
-              <Avatar  variant="rounded"sx={{ backgroundColor: 'red' }}>H</Avatar> Urgent Support Requests
+              <Avatar variant="rounded" sx={{ backgroundColor: 'red' }}>
+                H
+              </Avatar>{' '}
+              Urgent Support Requests
             </MenuItem>
           </Select>
         </FormControl>
-        <Button type="submit" variant="contained" sx={{ width: "250px", height: "50px", backgroundColor: "green", ml: "500px" }}>
-        {inquiryId ? 'Update' : 'Send'}
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            width: '250px',
+            height: '50px',
+            backgroundColor: 'green',
+            ml: '500px',
+          }}
+        >
+          {inquiryId ? 'Update' : 'Send'}
         </Button>
       </form>
-      <StyledSnackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-        <MuiAlert onClose={handleCloseSnackbar} variant="filled" severity="success" sx={{ width: '100%' }}>
+      <StyledSnackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <MuiAlert
+          onClose={handleCloseSnackbar}
+          variant="filled"
+          severity="success"
+          sx={{ width: '100%' }}
+        >
           {successMessage}
         </MuiAlert>
       </StyledSnackbar>
     </div>
-    
   );
-}
+};
 const CustomizedSteppers = () => {
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
-      <Stepper alternativeLabel activeStep={1} connector={<ColorlibConnector />}>
+      <Stepper
+        alternativeLabel
+        activeStep={1}
+        connector={<ColorlibConnector />}
+      >
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={CustomStepIcon}>{label}</StepLabel>
@@ -242,10 +350,13 @@ const CustomizedSteppers = () => {
       </Stepper>
     </Stack>
   );
-}
+};
 
-
-const steps = ['Select Category', 'Fill the Inquiry Form', 'Submit to the system'];
+const steps = [
+  'Select Category',
+  'Fill the Inquiry Form',
+  'Submit to the system',
+];
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${StepConnector.defaultProps?.classes?.alternativeLabel}`]: {
@@ -275,11 +386,24 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
 const CustomStepIcon = ({ active, completed, icon }) => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      {completed ? <CheckCircleIcon /> : active ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
-      <Typography sx={{ ml: 1, color: active ? 'text.primary' : 'text.secondary', fontWeight: 'bold' }}>{icon}</Typography>
+      {completed ? (
+        <CheckCircleIcon />
+      ) : active ? (
+        <RadioButtonCheckedIcon />
+      ) : (
+        <RadioButtonUncheckedIcon />
+      )}
+      <Typography
+        sx={{
+          ml: 1,
+          color: active ? 'text.primary' : 'text.secondary',
+          fontWeight: 'bold',
+        }}
+      >
+        {icon}
+      </Typography>
     </Box>
   );
-}
-
+};
 
 export default FormPage;

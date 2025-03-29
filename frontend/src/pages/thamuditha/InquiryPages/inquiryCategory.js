@@ -31,9 +31,9 @@ const images = [
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
   height: 250,
-  margin: '0 10px 20px', 
+  margin: '0 10px 20px',
   [theme.breakpoints.down('sm')]: {
-    width: '100% !important', 
+    width: '100% !important',
     height: 250,
   },
   '&:hover, &.Mui-focusVisible': {
@@ -100,7 +100,14 @@ const InquiryCategory = () => {
         <Typography variant="h4">Select Your Category</Typography>
         <CustomizedSteppers />
       </Stack>
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '50px',marginBottom: '100px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '50px',
+          marginBottom: '100px',
+        }}
+      >
         {images.map((image) => (
           <ImageButton
             key={image.title}
@@ -133,12 +140,16 @@ const InquiryCategory = () => {
       </Box>
     </div>
   );
-}
+};
 
 const CustomizedSteppers = () => {
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
-      <Stepper alternativeLabel activeStep={0} connector={<ColorlibConnector />}>
+      <Stepper
+        alternativeLabel
+        activeStep={0}
+        connector={<ColorlibConnector />}
+      >
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={CustomStepIcon}>{label}</StepLabel>
@@ -147,9 +158,13 @@ const CustomizedSteppers = () => {
       </Stepper>
     </Stack>
   );
-}
+};
 
-const steps = ['Select Category', 'Fill the Inquiry Form', 'Submit to the system'];
+const steps = [
+  'Select Category',
+  'Fill the Inquiry Form',
+  'Submit to the system',
+];
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${StepConnector.defaultProps?.classes?.alternativeLabel}`]: {
@@ -179,10 +194,24 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
 const CustomStepIcon = ({ active, completed, icon }) => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      {completed ? <CheckCircleIcon /> : active ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
-      <Typography sx={{ ml: 1, color: active ? 'text.primary' : 'text.secondary', fontWeight: 'bold' }}>{icon}</Typography>
+      {completed ? (
+        <CheckCircleIcon />
+      ) : active ? (
+        <RadioButtonCheckedIcon />
+      ) : (
+        <RadioButtonUncheckedIcon />
+      )}
+      <Typography
+        sx={{
+          ml: 1,
+          color: active ? 'text.primary' : 'text.secondary',
+          fontWeight: 'bold',
+        }}
+      >
+        {icon}
+      </Typography>
     </Box>
   );
-}
+};
 
 export default InquiryCategory;

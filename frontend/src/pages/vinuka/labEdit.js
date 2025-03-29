@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Paper, Button, TextField, styled } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Paper,
+  Button,
+  TextField,
+  styled,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,7 +16,7 @@ const StyledContainer = styled(Container)({
 
 const Label = styled(Typography)({
   display: 'block',
-  marginBottom: '2px', 
+  marginBottom: '2px',
   fontWeight: 'bold',
 });
 
@@ -30,7 +37,9 @@ const LabEdit = () => {
   const fetchLabDetails = async () => {
     try {
       const userName = sessionStorage.getItem('userName');
-      const response = await axios.get(`http://localhost:8070/labAccount/retrieve?userName=${userName}`);
+      const response = await axios.get(
+        `http://localhost:8070/labAccount/retrieve?userName=${userName}`
+      );
       setLabDetails(response.data);
     } catch (error) {
       console.error('Error fetching lab details:', error);
@@ -43,17 +52,21 @@ const LabEdit = () => {
 
   const handleUpdate = async () => {
     try {
-      const { userName, name, address, phone, district, city, password } = labDetails;
+      const { userName, name, address, phone, district, city, password } =
+        labDetails;
       const updateData = {
         name,
         address,
         phone,
         district,
         city,
-        password
+        password,
       };
-      await axios.put(`http://localhost:8070/labAccount/update/${userName}`, updateData);
-      alert("User Updated");
+      await axios.put(
+        `http://localhost:8070/labAccount/update/${userName}`,
+        updateData
+      );
+      alert('User Updated');
     } catch (error) {
       console.error('Error updating lab details:', error);
     }
@@ -80,10 +93,18 @@ const LabEdit = () => {
 
   return (
     <StyledContainer maxWidth="md">
-      <Paper style={{ padding: '20px', backgroundColor: 'rgba(255, 255, 255, 0.8)', width: '55%', margin: '50px auto' , marginTop:'125px'}}>
+      <Paper
+        style={{
+          padding: '20px',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          width: '55%',
+          margin: '50px auto',
+          marginTop: '125px',
+        }}
+      >
         <Typography variant="h4" gutterBottom>
           <center>Edit Your Details</center>
-        </Typography> 
+        </Typography>
         <div>
           <Label>User Name:</Label>
           <ValueLabel>{labDetails.userName}</ValueLabel>
@@ -104,7 +125,9 @@ const LabEdit = () => {
             fullWidth
             variant="outlined"
             value={labDetails.address || ''}
-            onChange={(e) => setLabDetails({ ...labDetails, address: e.target.value })}
+            onChange={(e) =>
+              setLabDetails({ ...labDetails, address: e.target.value })
+            }
           />
         </div>
         <div>
@@ -125,7 +148,9 @@ const LabEdit = () => {
             fullWidth
             variant="outlined"
             value={labDetails.district || ''}
-            onChange={(e) => setLabDetails({ ...labDetails, district: e.target.value })}
+            onChange={(e) =>
+              setLabDetails({ ...labDetails, district: e.target.value })
+            }
           />
         </div>
         <div>
@@ -134,7 +159,9 @@ const LabEdit = () => {
             fullWidth
             variant="outlined"
             value={labDetails.city || ''}
-            onChange={(e) => setLabDetails({ ...labDetails, city: e.target.value })}
+            onChange={(e) =>
+              setLabDetails({ ...labDetails, city: e.target.value })
+            }
           />
         </div>
         <div>
@@ -143,19 +170,36 @@ const LabEdit = () => {
             fullWidth
             variant="outlined"
             value={labDetails.password || ''}
-            onChange={(e) => setLabDetails({ ...labDetails, password: e.target.value })}
+            onChange={(e) =>
+              setLabDetails({ ...labDetails, password: e.target.value })
+            }
           />
         </div>
-        
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-          <Button variant="contained" color="primary" style={{ width: '48%' }} onClick={handleUpdate}>
+
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginTop: '20px',
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ width: '48%' }}
+            onClick={handleUpdate}
+          >
             Update
           </Button>
-          <Button variant="contained" color="secondary" style={{ width: '48%' }} onClick={handleNavigate}>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ width: '48%' }}
+            onClick={handleNavigate}
+          >
             Back
           </Button>
         </div>
-
       </Paper>
     </StyledContainer>
   );

@@ -1,6 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Tab, Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Box, Grid } from '@mui/material';
+import {
+  Tab,
+  Tabs,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Box,
+  Grid,
+} from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,9 +37,12 @@ const FarmerListComponent = () => {
   const [editedReply, setEditedReply] = useState('');
 
   useEffect(() => {
-    const fetchFarmers = async () => {      //fetchfarmers
+    const fetchFarmers = async () => {
+      //fetchfarmers
       try {
-        const response = await axios.get('http://localhost:8070/farmerReport/farmers');
+        const response = await axios.get(
+          'http://localhost:8070/farmerReport/farmers'
+        );
         setFarmers(response.data);
       } catch (error) {
         setError(error.message);
@@ -35,7 +56,9 @@ const FarmerListComponent = () => {
 
   const fetchReplies = async (farmerId) => {
     try {
-      const response = await axios.get(`http://localhost:8070/farmerReport/replies/${farmerId}`);
+      const response = await axios.get(
+        `http://localhost:8070/farmerReport/replies/${farmerId}`
+      );
       setReplies(response.data);
     } catch (error) {
       console.error('Error fetching replies:', error);
@@ -44,12 +67,14 @@ const FarmerListComponent = () => {
 
   const deleteReply = async (replyId) => {
     try {
-      await axios.delete(`http://localhost:8070/farmerReport/replies/${replyId}`);
-      setReplies(replies.filter(reply => reply._id !== replyId));
-      toast.success('Reply deleted successfully', { autoClose: 2000 }); 
+      await axios.delete(
+        `http://localhost:8070/farmerReport/replies/${replyId}`
+      );
+      setReplies(replies.filter((reply) => reply._id !== replyId));
+      toast.success('Reply deleted successfully', { autoClose: 2000 });
     } catch (error) {
       console.error('Error deleting reply:', error);
-      toast.error('Failed to delete reply', { autoClose: 2000 }); 
+      toast.error('Failed to delete reply', { autoClose: 2000 });
     }
   };
 
@@ -61,52 +86,54 @@ const FarmerListComponent = () => {
 
   const handleClosePopup = () => {
     setOpenPopup(false);
-    setEditMode(false); // Reset edit mode 
+    setEditMode(false); // Reset edit mode
   };
 
   const handleReplyClick = async () => {
     try {
       if (editMode) {
-        //update in 
-        await axios.put(`http://localhost:8070/farmerReport/replies/${editedReply._id}`, { replyText });
-        const updatedReplies = replies.map(reply =>
+        //update in
+        await axios.put(
+          `http://localhost:8070/farmerReport/replies/${editedReply._id}`,
+          { replyText }
+        );
+        const updatedReplies = replies.map((reply) =>
           reply._id === editedReply._id ? { ...reply, replyText } : reply
         );
         setReplies(updatedReplies);
         setEditMode(false);
-        toast.success('Reply updated successfully'); 
+        toast.success('Reply updated successfully');
       } else {
-        
-        const response = await axios.post(`http://localhost:8070/farmerReport/farmers/${selectedFarmer._id}/reply`, { replyText });
-      
+        const response = await axios.post(
+          `http://localhost:8070/farmerReport/farmers/${selectedFarmer._id}/reply`,
+          { replyText }
+        );
+
         // Update  to "Resolved"
-        await axios.put(`http://localhost:8070/farmerReport/farmers/${selectedFarmer._id}/status`);
-  
-        // Update the local state 
-        const updatedFarmer = farmers.map(farmer => 
-          farmer._id === selectedFarmer._id ? { ...farmer, status: 'Resolved' } : farmer
+        await axios.put(
+          `http://localhost:8070/farmerReport/farmers/${selectedFarmer._id}/status`
+        );
+
+        // Update the local state
+        const updatedFarmer = farmers.map((farmer) =>
+          farmer._id === selectedFarmer._id
+            ? { ...farmer, status: 'Resolved' }
+            : farmer
         );
         setFarmers(updatedFarmer);
-  
-        
+
         setReplies([...replies, response.data]);
-        toast.success('Reply sent successfully'); 
+        toast.success('Reply sent successfully');
       }
       setReplyText('');
     } catch (error) {
       console.error('Error sending reply:', error);
       toast.error('Failed to send reply');
     }
-  
-    
+
     setOpenPopup(false);
   };
-  
-  
-  
-  
-  
-  
+
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -144,26 +171,28 @@ const FarmerListComponent = () => {
     return <div>Error: {error}</div>;
   }
 
-  const pendingFarmers= farmers
-    .filter(farmer => farmer.status === 'Pending')
+  const pendingFarmers = farmers
+    .filter((farmer) => farmer.status === 'Pending')
     .sort((a, b) => {
       const priorityOrder = { High: 1, Medium: 2, Low: 3 };
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
 
-  const resolvedFarmers = farmers.filter(farmer => farmer.status === 'Resolved');
+  const resolvedFarmers = farmers.filter(
+    (farmer) => farmer.status === 'Resolved'
+  );
 
   return (
     <Grid container>
       <Grid item xs={9}>
-        <Box bgcolor='#cde3c3'>
+        <Box bgcolor="#cde3c3">
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab 
-              label="Pending" 
+            <Tab
+              label="Pending"
               sx={{ color: 'green', '&.Mui-selected': { color: 'green' } }}
             />
-            <Tab 
-              label="Resolved" 
+            <Tab
+              label="Resolved"
               sx={{ color: 'green', '&.Mui-selected': { color: 'green' } }}
             />
           </Tabs>
@@ -193,8 +222,15 @@ const FarmerListComponent = () => {
                   {replies.map((reply) => (
                     <div key={reply._id}>
                       <p>{reply.replyText}</p>
-                      <Button onClick={() => handleDeleteConfirmation(reply._id)}>Delete</Button>
-                      <Button onClick={() => handleEditClick(reply)}>Edit</Button> {/* Add edit button */}
+                      <Button
+                        onClick={() => handleDeleteConfirmation(reply._id)}
+                      >
+                        Delete
+                      </Button>
+                      <Button onClick={() => handleEditClick(reply)}>
+                        Edit
+                      </Button>{' '}
+                      {/* Add edit button */}
                     </div>
                   ))}
                   <TextField
@@ -205,7 +241,10 @@ const FarmerListComponent = () => {
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                   />
-                  <Button onClick={handleReplyClick}>{editMode ? 'Update' : 'Send'}</Button> {/* Change button text based on edit mode */}
+                  <Button onClick={handleReplyClick}>
+                    {editMode ? 'Update' : 'Send'}
+                  </Button>{' '}
+                  {/* Change button text based on edit mode */}
                 </div>
               )}
             </DialogContent>
@@ -216,8 +255,7 @@ const FarmerListComponent = () => {
           <Dialog
             open={deleteConfirmationOpen}
             onClose={handleDeleteConfirmationClose}
-          >                                          
-          
+          >
             <DialogTitle>Confirm Delete</DialogTitle>
             <DialogContent>
               Are you sure you want to delete this reply?
@@ -230,7 +268,10 @@ const FarmerListComponent = () => {
             </DialogActions>
           </Dialog>
           {tabValue === 0 && (
-            <TableContainer component={Paper} style={{ width: 1000, height: 600, bgcolor:'#cde3c3' }}>
+            <TableContainer
+              component={Paper}
+              style={{ width: 1000, height: 600, bgcolor: '#cde3c3' }}
+            >
               <Table>
                 <TableHead>
                   <TableRow>
@@ -253,7 +294,10 @@ const FarmerListComponent = () => {
                       <TableCell>{farmer.area}</TableCell>
                       <TableCell>{farmer.status}</TableCell>
                       <TableCell>
-                        <Button variant="contained" onClick={() => handleViewClick(farmer)}>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleViewClick(farmer)}
+                        >
                           View
                         </Button>
                       </TableCell>
@@ -264,7 +308,10 @@ const FarmerListComponent = () => {
             </TableContainer>
           )}
           {tabValue === 1 && (
-            <TableContainer component={Paper} style={{ width: 1000, height: 600, bgcolor:'#cde3c3' }}>
+            <TableContainer
+              component={Paper}
+              style={{ width: 1000, height: 600, bgcolor: '#cde3c3' }}
+            >
               <Table>
                 <TableHead>
                   <TableRow>
@@ -287,7 +334,10 @@ const FarmerListComponent = () => {
                       <TableCell>{farmer.area}</TableCell>
                       <TableCell>{farmer.status}</TableCell>
                       <TableCell>
-                        <Button variant="contained" onClick={() => handleViewClick(farmer)}>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleViewClick(farmer)}
+                        >
                           View
                         </Button>
                       </TableCell>

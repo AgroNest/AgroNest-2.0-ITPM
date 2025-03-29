@@ -23,7 +23,10 @@ const Login = ({ setIsLoggedIn }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8070/Farmer/login', formData);
+      const response = await axios.post(
+        'http://localhost:8070/Farmer/login',
+        formData
+      );
       const { user } = response.data;
       setIsLoggedIn(true);
       navigate(`/farmer/${user._id}`);
@@ -61,14 +64,27 @@ const Login = ({ setIsLoggedIn }) => {
             textAlign: 'center',
           }}
         >
-          <Grid container spacing={2} justifyContent="center" alignItems="center" style={{ maxWidth: 500 }}>
+          <Grid
+            container
+            spacing={2}
+            justifyContent="center"
+            alignItems="center"
+            style={{ maxWidth: 500 }}
+          >
             <Grid item xs={12}>
               <Typography variant="h5" align="center">
                 Login
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <TextField fullWidth variant="outlined" label="Username" name="username" value={formData.username} onChange={handleChange} />
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -88,10 +104,20 @@ const Login = ({ setIsLoggedIn }) => {
                 </Typography>
               </Grid>
             )}
-            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: 'flex', justifyContent: 'center' }}
+            >
               <Button
                 variant="contained"
-                sx={{ bgcolor: '#388e3c', color: '#ffffff', '&:hover': { bgcolor: '#388e3c' }, width: '100%', maxWidth: '200px' }}
+                sx={{
+                  bgcolor: '#388e3c',
+                  color: '#ffffff',
+                  '&:hover': { bgcolor: '#388e3c' },
+                  width: '100%',
+                  maxWidth: '200px',
+                }}
                 type="submit"
               >
                 Login

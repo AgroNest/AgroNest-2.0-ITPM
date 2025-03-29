@@ -3,11 +3,9 @@ import Signup from '../../Component/vinuka/Signup';
 
 const SignupPage = () => {
   return (
-    
-      <div className="signup-page-content">
-        <Signup />
-      </div>
-    
+    <div className="signup-page-content">
+      <Signup />
+    </div>
   );
 };
 

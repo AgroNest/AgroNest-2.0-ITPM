@@ -1,45 +1,65 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import TopSellerChart from "../../pages/kande/TopSellerChart";
-import FertilizerAnalysisChart from "../../pages/kande/TopFertilizerChart.js";
-import TopAreasChart from "../../pages/kande/TopAreaChart.js";
-import Sidebar from "./Sidebar/Sidebar.js"
-
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import TopSellerChart from '../../pages/kande/TopSellerChart';
+import FertilizerAnalysisChart from '../../pages/kande/TopFertilizerChart.js';
+import TopAreasChart from '../../pages/kande/TopAreaChart.js';
+import Sidebar from './Sidebar/Sidebar.js';
 
 const SysManagerDashboard = () => {
   const navigate = useNavigate();
 
   return (
     <div>
-      <Sidebar/>
-    <div style={{ backgroundColor: "#f7f7f7", minHeight: "100vh", padding: "20px" }}>
-      <div className="row mt-5" style={{ marginLeft: "400px" }}>
-        <div className="col">
-          <button
-            className="btn btn-primary btn-lg"
-            style={{ width: "250px", height: "100px", margin: "30px", padding: "10px" }}
-            onClick={() => navigate("/addtopfertilizers")}
-          >
-            Add Top Performing Fertilizer Category
-          </button>
-          <button
-            className="btn btn-primary btn-lg"
-            style={{ width: "250px", height: "100px", margin: "30px", padding: "10px" }}
-            onClick={() => navigate("/addtopsellingfertilizers")}
-          >
-            Add Top Selling Dealer
-          </button>
-          <button
-            className="btn btn-primary btn-lg"
-            style={{ width: "250px", height: "100px", margin: "30px", padding: "10px" }}
-            onClick={() => navigate("/addtopareas")}
-          >
-            Add Areas With Highest Registrations
-          </button>
+      <Sidebar />
+      <div
+        style={{
+          backgroundColor: '#f7f7f7',
+          minHeight: '100vh',
+          padding: '20px',
+        }}
+      >
+        <div className="row mt-5" style={{ marginLeft: '400px' }}>
+          <div className="col">
+            <button
+              className="btn btn-primary btn-lg"
+              style={{
+                width: '250px',
+                height: '100px',
+                margin: '30px',
+                padding: '10px',
+              }}
+              onClick={() => navigate('/addtopfertilizers')}
+            >
+              Add Top Performing Fertilizer Category
+            </button>
+            <button
+              className="btn btn-primary btn-lg"
+              style={{
+                width: '250px',
+                height: '100px',
+                margin: '30px',
+                padding: '10px',
+              }}
+              onClick={() => navigate('/addtopsellingfertilizers')}
+            >
+              Add Top Selling Dealer
+            </button>
+            <button
+              className="btn btn-primary btn-lg"
+              style={{
+                width: '250px',
+                height: '100px',
+                margin: '30px',
+                padding: '10px',
+              }}
+              onClick={() => navigate('/addtopareas')}
+            >
+              Add Areas With Highest Registrations
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* <div>
+        {/* <div>
        
         <section className="col-3" style={{ backgroundColor: "#e0e0e0", padding: "20px", height:"80%" }}>
           <div style={{ backgroundColor: "#f0f0f0", padding: "10px", marginBottom: "20px" }}>
@@ -62,19 +82,39 @@ const SysManagerDashboard = () => {
         </div> */}
 
         <div className="col-9">
-          <div style={{ backgroundColor: "#e0e0e0", padding: "20px", marginTop: "20px", marginLeft: "42%" }}>
+          <div
+            style={{
+              backgroundColor: '#e0e0e0',
+              padding: '20px',
+              marginTop: '20px',
+              marginLeft: '42%',
+            }}
+          >
             <TopSellerChart />
           </div>
-          <div style={{ backgroundColor: "#e0e0e0", padding: "20px", marginTop: "20px", marginLeft: "42%" }}>
+          <div
+            style={{
+              backgroundColor: '#e0e0e0',
+              padding: '20px',
+              marginTop: '20px',
+              marginLeft: '42%',
+            }}
+          >
             <FertilizerAnalysisChart />
           </div>
-          <div style={{ backgroundColor: "#e0e0e0", padding: "20px", marginTop: "20px", marginLeft: "42%" }}>
+          <div
+            style={{
+              backgroundColor: '#e0e0e0',
+              padding: '20px',
+              marginTop: '20px',
+              marginLeft: '42%',
+            }}
+          >
             <TopAreasChart />
           </div>
         </div>
       </div>
-      </div>
-    
+    </div>
   );
 };
 
